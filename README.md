@@ -1,2 +1,2 @@
-# Strongly-Connected-Components
-Практика 2023
+# Strongly-Connected-Components-Visualizer
+Проект для летней учебной практики: реализация, визуализация алгоритма Косарайю и Шарира для нахождения графа Герца.
