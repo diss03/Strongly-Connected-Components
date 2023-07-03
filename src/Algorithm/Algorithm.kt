@@ -7,22 +7,24 @@ open class Algorithm {
 
 class Kesarajo: Algorithm() {
     private var timeout: Int = 1
-    private val edges = ArrayList<Pair<Int, Int>>()
     private val n = scan.nextInt()
     private val m = scan.nextInt()
 
+    //Раз теперь граф генерируется рандомно, инпут был убран
     fun input(){
         var u: Int
         var v: Int
-
+/*
         for (i in 0 until m) {
             u = scan.nextInt()
             v = scan.nextInt()
             edges.add(Pair(u, v))
         }
+
+ */
     }
 
-    fun dfs(graph: Graph, ver: Node) {
+    fun dfs(graph: OrientedGraph, ver: Node) {
 
         ver.visited = true
         for (node in ver.adjacents) {
@@ -35,7 +37,7 @@ class Kesarajo: Algorithm() {
         timeout += 1
     }
 
-    fun dfs(graph: Graph, ver: Node, tmpComp: ArrayList<Int>) {
+    fun dfs(graph: OrientedGraph, ver: Node, tmpComp: ArrayList<Int>) {
         ver.visited = true
         tmpComp.add(ver.name - 1)
 
@@ -47,8 +49,14 @@ class Kesarajo: Algorithm() {
     }
 
     fun start(){
-            val graph = Graph(edges, n)
-
+            val graph = OrientedGraph()
+            graph.fillGraph(n, m)
+            for (node in graph.graph){
+                print("${node.name}: ")
+                for (temp in node.adjacents)
+                    print("${temp.name} ")
+                println()
+            }
             for (ver in 0 until n) {
                 if(!graph.graph[ver].visited){
                     dfs(graph, graph.graph[ver])
@@ -76,10 +84,9 @@ class Kesarajo: Algorithm() {
 
 }
 
-
+//Для проверки работы алгоритма запускаем
 fun main() {
     val ker = Kesarajo()
     ker.input()
     ker.start()
-
 }
