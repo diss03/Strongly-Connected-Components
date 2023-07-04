@@ -3,11 +3,7 @@ package com.example.practice
 import java.util.*
 val scan = Scanner(System.`in`)
 
-open class Algorithm {
-    open fun dfs(){}
-}
-
-class Kesarajo: Algorithm() {
+class Kesarajo{
     private var timeout: Int = 1
     val n = 4 //scan.nextInt()
     val m = 4 //scan.nextInt()
