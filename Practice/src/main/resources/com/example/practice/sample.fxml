@@ -39,7 +39,7 @@
                <Font name="System Bold Italic" size="14.0" />
             </font>
          </Button>
-         <Button fx:id="ClearBut" layoutX="14.0" layoutY="594.0" mnemonicParsing="false" prefHeight="67.0" prefWidth="156.0" style="-fx-border-color: black;" text="Clear">
+         <Button fx:id="ClearBut" layoutX="14.0" layoutY="594.0" mnemonicParsing="false" onMouseClicked="#ClearClicked" prefHeight="67.0" prefWidth="156.0" style="-fx-border-color: black;" text="Clear">
             <font>
                <Font name="System Bold Italic" size="14.0" />
             </font>
