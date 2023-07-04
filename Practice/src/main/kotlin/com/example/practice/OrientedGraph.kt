@@ -8,12 +8,10 @@ class OrientedGraph: Graph {
     var order = ArrayList<Node>()
     var graph = ArrayList<Node>()
     var NodeAmount: Int = 0
-    var EdgesAmount: Int = 0
 
     // Генерирует граф с заданным количеством ребёр и вершин(сделать проверку при вводе на невозможное кол-во вершин)
     override fun fillGraph(nodes: Int, edges: Int){
         this.NodeAmount = nodes
-        this.EdgesAmount = edges
         graph.clear()
         order.clear()
         graph = GraphGenerator().generateGraph(nodes, edges)

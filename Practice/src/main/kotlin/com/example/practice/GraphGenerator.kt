@@ -2,8 +2,14 @@ package com.example.practice
 
 class GraphGenerator {
     //Генерация графа
-    fun generateGraph(nodes: Int, edges: Int): ArrayList<Node> {
+    fun generateGraph(n: Int, m: Int): ArrayList<Node> {
         val graph = ArrayList<Node>()
+        var edges = m
+        var nodes = n
+        if( m > n * (n - 1)){
+            edges = n * (n - 1)
+            nodes = n
+        }
         for (i in 1..nodes) {
             graph.add(Node(i))
         }

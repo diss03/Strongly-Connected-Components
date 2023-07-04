@@ -1,16 +1,17 @@
 package com.example.practice
 
+import javafx.event.ActionEvent
+import javafx.event.EventHandler
 import javafx.fxml.FXML
 import javafx.scene.control.Button
+import javafx.scene.control.TextField
+import javafx.scene.control.TextInputDialog
 import javafx.scene.input.MouseEvent
 import javafx.scene.layout.AnchorPane
-import javafx.scene.paint.Color
 import javafx.scene.shape.Line
-import javafx.scene.text.Font
 import java.net.URL
 import java.util.*
-import kotlin.math.cos
-import kotlin.math.sin
+
 
 class MainController {
 
@@ -45,9 +46,19 @@ class MainController {
     private lateinit var VertLine: Line
 
     @FXML
-    fun LoadBut(event: MouseEvent?) {
-    }
+    private lateinit var WindowForInput: TextField
 
+    @FXML
+    private lateinit var StepBut: Button
+
+    private lateinit var draw: Drawablegraph
+    private  var n: Int = 5
+    private  var m: Int = 7
+
+    @FXML
+    fun LoadBut(event: MouseEvent?) {
+
+    }
     @FXML
     fun ClearClicked(event: MouseEvent?) {
         FrontPane.children.clear()
@@ -55,16 +66,26 @@ class MainController {
 
     @FXML
     fun GenerateBut(event: MouseEvent) {
+        if(WindowForInput.text != ""){
+            val Node_Edge = WindowForInput.text
+            this.n = Node_Edge.split(' ')[0].toInt()
+            this.m = Node_Edge.split(' ')[1].toInt()
+            WindowForInput.clear()
+        }
+
+        this.draw = Drawablegraph(FrontPane, n, m)
         ClearClicked(event)
-        val draw = Drawablegraph(FrontPane)
-        draw.drawNode()
-        draw.drawEdge()
-        draw.drawText()
-        //draw.drawArrow()
+        this.draw.drawNode()
+        this.draw.drawEdge()
+        this.draw.drawText()
+    }
+    @FXML
+    fun INputWindowClicked(event: MouseEvent) {
     }
 
     @FXML
     fun initialize() {
+
     }
 
 }

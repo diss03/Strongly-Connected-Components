@@ -8,10 +8,10 @@ import javafx.scene.shape.LineTo
 import javafx.scene.text.Font
 import kotlin.math.*
 
-class Drawablegraph(var FrontPane: AnchorPane, var graph: OrientedGraph = OrientedGraph()){
+class Drawablegraph(var FrontPane: AnchorPane, n: Int = 5, m: Int = 7, var graph: OrientedGraph = OrientedGraph()){
 
     init{
-        graph.fillGraph(5, 7)
+        graph.fillGraph(n, m)
     }
 
     fun drawNode(){
@@ -51,7 +51,7 @@ class Drawablegraph(var FrontPane: AnchorPane, var graph: OrientedGraph = Orient
         // get the slope of the line and find its angle
         val slope = (startY - endY) / (startX - endX)
         val lineAngle = atan(slope)
-        val arrowAngle = if (startX > endX) Math.toRadians(11.0) else -Math.toRadians(168.0)
+        val arrowAngle = if (startX >= endX) Math.toRadians(11.0) else -Math.toRadians(168.0)
         val line = Line(startX, startY, endX, endY)
         val lineLength = sqrt((startX - endX).pow(2.0) + (startY - endY).pow(2.0))
         val arrowLength = 300 / 10

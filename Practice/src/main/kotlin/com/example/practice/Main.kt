@@ -9,7 +9,7 @@ import javafx.stage.Stage
 class HelloApplication : Application() {
     override fun start(stage: Stage) {
         val fxmlLoader = FXMLLoader(HelloApplication::class.java.getResource("sample.fxml"))
-        val scene = Scene(fxmlLoader.load(), 1100.0, 750.0)
+        val scene = Scene(fxmlLoader.load(), 1200.0, 715.0)
         stage.title = "Kosaraju"
         stage.scene = scene
         stage.show()
