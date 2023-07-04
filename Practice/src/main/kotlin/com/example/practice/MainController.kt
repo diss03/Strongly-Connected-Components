@@ -60,6 +60,7 @@ class MainController {
         draw.drawNode()
         draw.drawEdge()
         draw.drawText()
+        //draw.drawArrow()
     }
 
     @FXML
