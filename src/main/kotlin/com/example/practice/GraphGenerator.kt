@@ -7,6 +7,7 @@ class GraphGenerator {
         var edges = m
         var nodes = n
         if( m > n * (n - 1)){
+            println("Invalid data! It will be change to n*(n-1) & n.")
             edges = n * (n - 1)
             nodes = n
         }
@@ -24,6 +25,7 @@ class GraphGenerator {
             graph[node1].adjacents.add(graph[node2])
             graph[node2].revadjacents.add(graph[node1])
         }
+        println(graph)
         return graph
     }
 
@@ -37,5 +39,4 @@ class GraphGenerator {
         }
         return arr
     }
-
 }

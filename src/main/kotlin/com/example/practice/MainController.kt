@@ -57,7 +57,7 @@ class MainController {
         ClearClicked(event)
         val loader = Loader()
         draw.graph.clearGraph()
-        draw.graph.graph = loader.loadFromFile()
+        draw.graph.graph = loader.loadFromFile("saved_graph.json")
         draw.drawNode()
         draw.drawEdge()
         draw.drawText()

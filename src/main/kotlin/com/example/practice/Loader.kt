@@ -2,9 +2,9 @@ package com.example.practice
 import java.io.File
 import org.json.JSONObject
 class Loader {
-    fun loadFromFile(): ArrayList<Node>{
+    fun loadFromFile(filename: String): ArrayList<Node>{
         var graph = ArrayList<Node>()
-        val json = File("saved_graph.json").readText()
+        val json = File(filename).readText()
         val jsonObj = JSONObject(json.substring(json.indexOf("{"), json.lastIndexOf("}") + 1))
         val nodenumb = jsonObj.getInt("NodeNumber")
         for (i in 1..nodenumb){
