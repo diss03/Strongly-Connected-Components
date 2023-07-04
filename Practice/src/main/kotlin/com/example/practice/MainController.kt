@@ -50,10 +50,12 @@ class MainController {
 
     @FXML
     fun ClearClicked(event: MouseEvent?) {
+        FrontPane.children.clear()
     }
 
     @FXML
     fun GenerateBut(event: MouseEvent) {
+        ClearClicked(event)
         val draw = Drawablegraph(FrontPane)
         draw.drawNode()
         draw.drawEdge()
