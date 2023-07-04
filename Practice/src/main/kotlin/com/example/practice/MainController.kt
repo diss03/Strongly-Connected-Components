@@ -57,8 +57,20 @@ class MainController {
 
     @FXML
     fun LoadBut(event: MouseEvent?) {
-
+        ClearClicked(event)
+        val loader = Loader()
+        draw.graph.clearGraph()
+        draw.graph.graph = loader.loadFromFile()
+        draw.drawNode()
+        draw.drawEdge()
+        draw.drawText()
     }
+    @FXML
+    fun SaveBut(event: MouseEvent?){
+        val saver = Saver()
+        saver.saveToFile(draw.graph.graph)
+    }
+
     @FXML
     fun ClearClicked(event: MouseEvent?) {
         FrontPane.children.clear()
@@ -72,7 +84,6 @@ class MainController {
             this.m = Node_Edge.split(' ')[1].toInt()
             WindowForInput.clear()
         }
-
         this.draw = Drawablegraph(FrontPane, n, m)
         ClearClicked(event)
         this.draw.drawNode()
@@ -85,7 +96,7 @@ class MainController {
 
     @FXML
     fun initialize() {
-
+        this.draw = Drawablegraph(FrontPane, n, m)
     }
 
 }

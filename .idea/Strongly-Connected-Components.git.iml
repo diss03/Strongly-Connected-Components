@@ -2,8 +2,15 @@
 <module type="JAVA_MODULE" version="4">
   <component name="NewModuleRootManager" inherit-compiler-output="true">
     <exclude-output />
-    <content url="file://$MODULE_DIR$" />
-    <orderEntry type="inheritedJdk" />
+    <content url="file://$MODULE_DIR$">
+      <sourceFolder url="file://$MODULE_DIR$/Practice/src/main/kotlin/com/example/practice" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/Practice/src/main/resources" type="java-resource" />
+      <sourceFolder url="file://$MODULE_DIR$/Practice/src/main/resources/com/example/practice" type="java-resource" />
+    </content>
+    <orderEntry type="jdk" jdkName="20" jdkType="JavaSDK" />
     <orderEntry type="sourceFolder" forTests="false" />
+    <orderEntry type="library" exported="" name="KotlinJavaRuntime" level="project" />
+    <orderEntry type="library" exported="" name="JavaFX" level="project" />
+    <orderEntry type="library" exported="" name="json" level="project" />
   </component>
 </module>

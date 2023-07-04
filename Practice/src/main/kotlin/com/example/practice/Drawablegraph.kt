@@ -15,8 +15,8 @@ class Drawablegraph(var FrontPane: AnchorPane, n: Int = 5, m: Int = 7, var graph
     }
 
     fun drawNode(){
-        val increment = 360.0/graph.NodeAmount
-        for(i in 0 until graph.NodeAmount){
+        val increment = 360.0/graph.graph.size
+        for(i in 0 until graph.graph.size){
 
             val y = FrontPane.height / 2 + 200 * sin(Math.toRadians((increment*i)))
             val x = FrontPane.width / 2 + 200 * cos(Math.toRadians((increment*i)))
@@ -39,7 +39,7 @@ class Drawablegraph(var FrontPane: AnchorPane, n: Int = 5, m: Int = 7, var graph
     }
 
     fun drawText(){
-        for(i in 0 until graph.NodeAmount){
+        for(i in 0 until graph.graph.size){
             val text = graph.graph[i].createText()
             text.font = Font(16.0)
             text.fill = Color.WHITE
@@ -68,5 +68,8 @@ class Drawablegraph(var FrontPane: AnchorPane, n: Int = 5, m: Int = 7, var graph
         arrow2.endX = line.endX + arrowLength * cos(lineAngle + arrowAngle)
         arrow2.endY = line.endY + arrowLength * sin(lineAngle + arrowAngle)
         FrontPane.children.addAll(line, arrow1, arrow2)
+    }
+    fun create_graph(n: Int = 5, m: Int = 7){
+        graph.fillGraph(n, m)
     }
 }

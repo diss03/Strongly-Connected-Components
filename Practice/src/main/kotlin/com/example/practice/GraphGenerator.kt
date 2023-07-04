@@ -28,7 +28,7 @@ class GraphGenerator {
     }
 
     //Вспомогательная функция для представления названий вершин в виде IntArray
-    private fun intList(list: java.util.ArrayList<Node>): IntArray {
+    public fun intList(list: java.util.ArrayList<Node>): IntArray {
         val arr = IntArray(list.size)
         var i = 0
         for (item in list) {
