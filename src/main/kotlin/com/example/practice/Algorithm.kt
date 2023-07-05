@@ -51,7 +51,7 @@ class Kosaraju(var graph: OrientedGraph = OrientedGraph()): Algorithm {
         if (graph.order.size > 1)
             graph.order = graph.order.reversed() as ArrayList<Node>
         else if (graph.order.size == 1)
-            return "1: [] "
+            return "1: [1] "
         else
             return ""
 
