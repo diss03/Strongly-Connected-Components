@@ -11,6 +11,7 @@ class GraphGenerator {
             edges = n * (n - 1)
             nodes = n
         }
+        //если количество узлов/мостов отрицательно или равно 0 -> в циклы не входим
         for (i in 1..nodes) {
             graph.add(Node(i))
         }
