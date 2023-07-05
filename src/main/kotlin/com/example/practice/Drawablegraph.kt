@@ -31,20 +31,25 @@ class Drawablegraph(var FrontPane: AnchorPane, n: Int = 5, m: Int = 7, var graph
                 val slope = (it.circle.centerY - elem.circle.centerY) / (it.circle.centerX - elem.circle.centerX)
                 val lineAngle = atan(slope)
                 val arrowAngle = if (it.circle.centerX >= elem.circle.centerX) Math.toRadians(11.0) else -Math.toRadians(168.0)
-                val line = Line(it.circle.centerX, it.circle.centerY, elem.circle.centerX, elem.circle.centerY)
-                //val lineLength = sqrt((it.circle.centerX - elem.circle.centerX).pow(2.0) + (it.circle.centerY - elem.circle.centerY).pow(2.0))
-                val arrowLength = 300 / 10
-
+                val line: Line
                 val arrow1 = Line()
-                arrow1.startX = line.endX
-                arrow1.startY = line.endY
-                arrow1.endX = line.endX + arrowLength * cos(lineAngle - arrowAngle)
-                arrow1.endY = line.endY + arrowLength * sin(lineAngle - arrowAngle)
                 val arrow2 = Line()
-                arrow2.startX = line.endX
-                arrow2.startY = line.endY
-                arrow2.endX = line.endX + arrowLength * cos(lineAngle + arrowAngle)
-                arrow2.endY = line.endY + arrowLength * sin(lineAngle + arrowAngle)
+                val arrowLength = 200 / 10
+                val arg1 = findCollision(it.circle.centerX, it.circle.centerY, elem.circle.centerX, elem.circle.centerY, elem.circle.radius)
+                val arg2 = findCollision(elem.circle.centerX, elem.circle.centerY, it.circle.centerX, it.circle.centerY, it.circle.radius)
+                val ax = arg1.first
+                val ay = arg1.second
+                val bx = arg2.first
+                val by = arg2.second
+                line = Line(bx + it.circle.centerX,by + it.circle.centerY,ax + elem.circle.centerX,ay + elem.circle.centerY)
+                arrow1.startX = ax + elem.circle.centerX
+                arrow1.startY = ay + elem.circle.centerY
+                arrow1.endX = ax + elem.circle.centerX + arrowLength * cos(lineAngle - arrowAngle)
+                arrow1.endY = ay + elem.circle.centerY + arrowLength * sin(lineAngle - arrowAngle)
+                arrow2.startX = ax + elem.circle.centerX
+                arrow2.startY = ay + elem.circle.centerY
+                arrow2.endX = ax + elem.circle.centerX + arrowLength * cos(lineAngle + arrowAngle)
+                arrow2.endY = ay + elem.circle.centerY + arrowLength * sin(lineAngle + arrowAngle)
                 FrontPane.children.addAll(line, arrow1, arrow2)
             }
         }
@@ -56,6 +61,42 @@ class Drawablegraph(var FrontPane: AnchorPane, n: Int = 5, m: Int = 7, var graph
             text.font = Font(16.0)
             text.fill = Color.WHITE
             FrontPane.children.add(text)
+        }
+    }
+
+    /**
+     * Функция находящая точку соприкосновнения прямой и окружности
+     * @param x1 Точка через которую проходит прямая
+     * @param y1 Точка через которую проходит прямая
+     * @param x2 Точка через которую проходит прямая и точка центра окружности
+     * @param y2 Точка через которую проходит прямая и точка центра окружности
+     * @param r Радиус окружности
+     * @return Возвращает точку соприкосновения прямой и окружности в виде: Pair<Double, Double>
+     */
+    private fun findCollision(x1: Double, y1: Double, x2: Double, y2: Double, r: Double): Pair<Double, Double>{
+        var k = (y1 - y2) / (x1 - x2)
+        var a = -k
+        var b = 1
+        var c = 0
+        val x0 = -a * c / (a * a + b * b)
+        val y0 = -b * c / (a * a + b * b)
+        if (abs(c * c - r * r * (a * a + b * b)) < 0.01) {
+            return Pair(x0,y0)
+        }
+        else{
+            val d = r * r - c * c / (a * a + b * b)
+            val mult = sqrt(d / (a * a + b * b))
+            var ax: Double
+            var ay: Double
+            if (x1 < x2){
+                ax = x0 - b * mult
+                ay = y0 + a * mult
+            }
+            else {
+                ax = x0 + b * mult
+                ay = y0 - a * mult
+            }
+            return Pair(ax, ay)
         }
     }
     fun create_graph(n: Int = 5, m: Int = 7){
