@@ -1,5 +1,6 @@
 package com.example.practice
 
+import javafx.scene.paint.Color
 import java.util.*
 val scan = Scanner(System.`in`)
 
@@ -7,15 +8,14 @@ val scan = Scanner(System.`in`)
 //    AUTO(1), HAND(2)
 //}
 
-open class Algorithm {
-    open fun dfs(){}
+interface Algorithm{
+    fun start(): String
 }
 
-class Kosaraju: Algorithm() {
+class Kosaraju(var graph: OrientedGraph = OrientedGraph()): Algorithm {
     private var timeout: Int = 1
-    var n = 4 //scan.nextInt()
-    var m = 4 //scan.nextInt()
-    var graph = OrientedGraph()// = OrientedGraph()
+    var n = graph.graph.size
+
     fun dfs(graph: OrientedGraph, vertex: Node) {
         vertex.visited = true
         for (node in vertex.adjacents) {
@@ -39,82 +39,51 @@ class Kosaraju: Algorithm() {
         }
     }
 
-    fun start(mode: Int): String{
+    override fun start(): String {
         var result = ""
-        if(mode == 0) { //AUTO
-            graph.fillGraph(n, m)
 
-            for (vertex in 0 until n) {
-                if (!graph.graph[vertex].visited) {
-                    dfs(graph, graph.graph[vertex])
-                }
-            }
-
-            if(graph.order.size > 1)
-                graph.order = graph.order.reversed() as ArrayList<Node>
-            else if(graph.order.size == 1)
-                return "1: [] "
-            else
-                return ""
-            graph.graph.forEach { it.visited = false }
-            var i = 0
-
-            for (vertex in graph.order) {
-                if (!vertex.visited) {
-                    val tmpComp = ArrayList<Int>()
-                    dfs(graph, vertex, tmpComp)
-
-                    for (an in 0 .. tmpComp.size-1) {
-                        tmpComp[an] =  tmpComp[an]+1
-                    }
-                    i++
-
-                    result = result + "$i: $tmpComp "
-//                    println(result)
-                }
-            }
-
-        }
-
-        else if(mode == 1) { //HAND
-            for (vertex in 0 until n) {
-                if (!graph.graph[vertex].visited) {
-                    dfs(graph, graph.graph[vertex])
-                }
-            }
-
-            if(graph.order.size > 1)
-                graph.order = graph.order.reversed() as ArrayList<Node>
-            else if(graph.order.size == 1)
-                return "1: [] "
-            else
-                return ""
-
-            graph.graph.forEach { it.visited = false }
-            var i = 0
-
-            for (vertex in graph.order) {
-                if (!vertex.visited) {
-                    val tmpComp = ArrayList<Int>()
-                    dfs(graph, vertex, tmpComp)
-
-                    for (an in 0 .. tmpComp.size-1) {
-                        tmpComp[an] =  tmpComp[an]+1
-                    }
-                    i++
-
-                    result = result + "$i: $tmpComp "
-//                    println(result)
-                }
+        for (vertex in 0 until n) {
+            if (!graph.graph[vertex].visited) {
+                dfs(graph, graph.graph[vertex])
             }
         }
-        else println("Указан неверный режим выполнения")
+
+        if (graph.order.size > 1)
+            graph.order = graph.order.reversed() as ArrayList<Node>
+        else if (graph.order.size == 1)
+            return "1: [] "
+        else
+            return ""
+
+        graph.graph.forEach { it.visited = false }
+        var i = 0
+
+        for (vertex in graph.order) {
+            if (!vertex.visited) {
+                val tmpComp = ArrayList<Int>()
+                dfs(graph, vertex, tmpComp)
+
+                val r = (0..255).random()
+                val g = (0..255).random()
+                val b = (0..255).random()
+
+                for (an in 0 until tmpComp.size) {
+                    tmpComp[an] = tmpComp[an] + 1
+                    graph.graph[tmpComp[an] - 1].circle.fill = Color.rgb(r, g, b)
+                }
+                i++
+
+                result = "$result$i: $tmpComp "
+
+            }
+        }
+        println(result)
+        graph.graph.forEach { it.visited = false }
         return result
     }
 }
-
 //Для проверки работы алгоритма запускаем
 fun main() {
     val ker = Kosaraju()
-    ker.start(0)
+    ker.start()
 }

@@ -88,6 +88,11 @@ class MainController {
         this.draw.drawText()
     }
     @FXML
+    fun StartAlgorithm(event: MouseEvent?) {
+        val obj = Kosaraju(draw.graph)
+        obj.start()
+    }
+    @FXML
     fun INputWindowClicked(event: MouseEvent) {
     }
 

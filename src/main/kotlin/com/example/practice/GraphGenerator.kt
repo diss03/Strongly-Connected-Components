@@ -25,7 +25,6 @@ class GraphGenerator {
             graph[node1].adjacents.add(graph[node2])
             graph[node2].revadjacents.add(graph[node1])
         }
-        println(graph)
         return graph
     }
 
