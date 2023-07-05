@@ -107,5 +107,18 @@ class KosarajuTest {
         assertEquals(expected, actual)
     }
 
+    @org.junit.jupiter.api.Test
+    @org.junit.jupiter.api.DisplayName("Graph with 0 vertex")
+    fun startTest8() {
+        var node_list: ArrayList<Node> = Loader().loadFromFile("test_graph_6.json")
+        var kosaraju: Kosaraju = Kosaraju()
+        kosaraju.n = 0
+        kosaraju.m = 0
+        kosaraju.graph = OrientedGraph()
+        kosaraju.graph.graph = node_list
 
+        val actual = kosaraju.start(1)
+        val expected = ""
+        assertEquals(expected, actual)
+    }
 }

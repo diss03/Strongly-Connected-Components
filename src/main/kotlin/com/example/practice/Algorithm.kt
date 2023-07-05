@@ -50,10 +50,12 @@ class Kosaraju: Algorithm() {
                 }
             }
 
-            if(graph.order.size != 1)
+            if(graph.order.size > 1)
                 graph.order = graph.order.reversed() as ArrayList<Node>
-            else
+            else if(graph.order.size == 1)
                 return "1: [] "
+            else
+                return ""
             graph.graph.forEach { it.visited = false }
             var i = 0
 
@@ -81,10 +83,13 @@ class Kosaraju: Algorithm() {
                 }
             }
 
-            if(graph.order.size != 1)
+            if(graph.order.size > 1)
                 graph.order = graph.order.reversed() as ArrayList<Node>
-            else
+            else if(graph.order.size == 1)
                 return "1: [] "
+            else
+                return ""
+
             graph.graph.forEach { it.visited = false }
             var i = 0
 

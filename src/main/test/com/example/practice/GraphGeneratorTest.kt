@@ -69,4 +69,38 @@ class GraphGeneratorTest {
         actual = "$nodeAmount $vertexAmount"
         assertEquals(expected, actual)
     }
+
+    @Test
+    @DisplayName("Check node & edges amount")
+    fun generateGraphTest6() {
+        var generator = GraphGenerator()
+        val nodeArray = generator.generateGraph(0, 0)
+        val nodeAmount = nodeArray.size
+        var vertexAmount = 0
+        var actual = ""
+        val expected = "0 0"
+        for(vertex in nodeArray){
+            for(i in vertex.adjacents)
+                vertexAmount += 1
+        }
+        actual = "$nodeAmount $vertexAmount"
+        assertEquals(expected, actual)
+    }
+
+    @Test
+    @DisplayName("Check node & edges amount")
+    fun generateGraphTest5() {
+        var generator = GraphGenerator()
+        val nodeArray = generator.generateGraph(-10, -10)
+        val nodeAmount = nodeArray.size
+        var vertexAmount = 0
+        var actual = ""
+        val expected = "0 0"
+        for(vertex in nodeArray){
+            for(i in vertex.adjacents)
+                vertexAmount += 1
+        }
+        actual = "$nodeAmount $vertexAmount"
+        assertEquals(expected, actual)
+    }
 }
