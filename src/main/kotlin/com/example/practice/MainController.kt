@@ -63,7 +63,7 @@ class MainController {
     fun LoadBut(event: MouseEvent?) {
         if (job.isActive)
             job.cancel()
-        ClearClicked(event)
+        FrontPane.children.clear()
         val loader = Loader()
         draw.graph.clearGraph()
         draw.graph.graph = loader.loadFromFile("saved_graph.json")
@@ -84,7 +84,8 @@ class MainController {
     fun ClearClicked(event: MouseEvent?) {
         if (job.isActive)
             job.cancel()
-        obj = Kosaraju(draw.graph)
+        //obj = Kosaraju(draw.graph)
+        draw.graph.clearGraph()
         FrontPane.children.clear()
     }
 
@@ -105,7 +106,7 @@ class MainController {
             }
         }
         this.draw = Drawablegraph(FrontPane, n, m)
-        ClearClicked(event)
+        FrontPane.children.clear()
         this.draw.drawNode()
         this.draw.drawEdge()
         this.draw.drawText()
@@ -124,7 +125,12 @@ class MainController {
     @FXML
 
     fun DeleteClick(event: MouseEvent?) {
-
+        if (job.isActive)
+            job.cancel()
+        FrontPane.children.clear()
+        this.draw.drawNode()
+        this.draw.drawEdge()
+        this.draw.drawText()
         for (node in draw.graph.graph) {
             node.circle.setOnMouseClicked {
                 (run {
@@ -173,7 +179,7 @@ class MainController {
     }
     fun stepBut(event: MouseEvent?){
         var step = 1000
-        ClearClicked(event)
+        FrontPane.children.clear()
         this.draw.drawNode()
         this.draw.drawEdge()
         this.draw.drawText()

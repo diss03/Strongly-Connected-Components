@@ -31,7 +31,7 @@ class Drawablegraph(var FrontPane: AnchorPane, n: Int = 5, m: Int = 7, var graph
             val y = FrontPane.height / 2 + 200 * sin(Math.toRadians((increment*i)))
             val x = FrontPane.width / 2 + 200 * cos(Math.toRadians((increment*i)))
 
-            val circle = graph.graph[i].createCircle(x, y, 15.0)
+            val circle = graph.graph[i].createCircle(x, y, 20.0)
             circle.fill = colors[i]
             FrontPane.children.add(circle)
         }
@@ -68,7 +68,7 @@ class Drawablegraph(var FrontPane: AnchorPane, n: Int = 5, m: Int = 7, var graph
                 arrow2.startY = ay + elem.circle.centerY
                 arrow2.endX = ax + elem.circle.centerX + arrowLength * cos(lineAngle + arrowAngle)
                 arrow2.endY = ay + elem.circle.centerY + arrowLength * sin(lineAngle + arrowAngle)
-                line.strokeWidth = 2.0
+                line.strokeWidth = 3.0
                 FrontPane.children.addAll(line, arrow1, arrow2)
             }
         }
@@ -98,6 +98,7 @@ class Drawablegraph(var FrontPane: AnchorPane, n: Int = 5, m: Int = 7, var graph
                 arrow2.startY = ay + elem.circle.centerY
                 arrow2.endX = ax + elem.circle.centerX + arrowLength * cos(lineAngle + arrowAngle)
                 arrow2.endY = ay + elem.circle.centerY + arrowLength * sin(lineAngle + arrowAngle)
+                line.strokeWidth = 3.0
                 FrontPane.children.addAll(line, arrow1, arrow2)
             }
         }
