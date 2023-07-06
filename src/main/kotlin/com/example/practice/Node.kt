@@ -3,7 +3,7 @@ package com.example.practice
 import javafx.scene.shape.Circle
 import javafx.scene.text.Text
 
-class Node(val name: Int, var x: Double = 0.0, var y: Double = 0.0, var r: Double = 0.0){
+class Node(var name: Int, var x: Double = 0.0, var y: Double = 0.0, var r: Double = 0.0){
 
     var visited: Boolean = false
     var timeout: Int = 0

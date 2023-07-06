@@ -19,7 +19,7 @@ class Drawablegraph(var FrontPane: AnchorPane, n: Int = 5, m: Int = 7, var graph
             val y = FrontPane.height / 2 + 200 * sin(Math.toRadians((increment*i)))
             val x = FrontPane.width / 2 + 200 * cos(Math.toRadians((increment*i)))
 
-            val circle = graph.graph[i].createCircle(x, y, 15.0)
+            val circle = graph.graph[i].createCircle(x, y, 20.0)
             circle.fill = Color.BLACK
             FrontPane.children.add(circle)
         }
@@ -36,6 +36,12 @@ class Drawablegraph(var FrontPane: AnchorPane, n: Int = 5, m: Int = 7, var graph
             FrontPane.children.add(circle)
         }
     }
+    fun draw_existing_graph(tmp_graph: OrientedGraph){
+        for(node in tmp_graph.graph){
+            FrontPane.children.add(node.circle)
+        }
+    }
+
 
     fun drawEdge(){
         graph.graph.forEach {
@@ -62,6 +68,7 @@ class Drawablegraph(var FrontPane: AnchorPane, n: Int = 5, m: Int = 7, var graph
                 arrow2.startY = ay + elem.circle.centerY
                 arrow2.endX = ax + elem.circle.centerX + arrowLength * cos(lineAngle + arrowAngle)
                 arrow2.endY = ay + elem.circle.centerY + arrowLength * sin(lineAngle + arrowAngle)
+                line.strokeWidth = 2.0
                 FrontPane.children.addAll(line, arrow1, arrow2)
             }
         }
@@ -115,10 +122,10 @@ class Drawablegraph(var FrontPane: AnchorPane, n: Int = 5, m: Int = 7, var graph
      * @return Возвращает точку соприкосновения прямой и окружности в виде: Pair<Double, Double>
      */
     private fun findCollision(x1: Double, y1: Double, x2: Double, y2: Double, r: Double): Pair<Double, Double>{
-        var k = (y1 - y2) / (x1 - x2)
-        var a = -k
-        var b = 1
-        var c = 0
+        val k = (y1 - y2) / (x1 - x2)
+        val a = -k
+        val b = 1
+        val c = 0
         val x0 = -a * c / (a * a + b * b)
         val y0 = -b * c / (a * a + b * b)
         if (abs(c * c - r * r * (a * a + b * b)) < 0.01) {
@@ -127,8 +134,8 @@ class Drawablegraph(var FrontPane: AnchorPane, n: Int = 5, m: Int = 7, var graph
         else{
             val d = r * r - c * c / (a * a + b * b)
             val mult = sqrt(d / (a * a + b * b))
-            var ax: Double
-            var ay: Double
+            val ax: Double
+            val ay: Double
             if (x1 < x2){
                 ax = x0 - b * mult
                 ay = y0 + a * mult

@@ -22,20 +22,24 @@ interface Algorithm{
 }
 
 class Kosaraju(var graph: OrientedGraph = OrientedGraph()): Algorithm {
-    private var timeout: Int = 1
+    private var timeout: Int = 0
     var n = graph.graph.size
     private var job: Job? = null
 
     fun dfs(graph: OrientedGraph, vertex: Node) {
+        timeout += 1
         vertex.visited = true
         for (node in vertex.adjacents) {
             if (!node.visited) {
                 dfs(graph, node)
             }
         }
+        timeout += 1
         vertex.timeout = timeout
         graph.order.add(vertex)
-        timeout += 1
+//        timeout += 1
+
+        // а остальные компоненты???
     }
 
     fun dfs(graph: OrientedGraph, vertex: Node, tmpComp: ArrayList<Int>) {
@@ -60,13 +64,12 @@ class Kosaraju(var graph: OrientedGraph = OrientedGraph()): Algorithm {
         if (graph.order.size > 1)
             graph.order = graph.order.reversed() as ArrayList<Node>
         else if (graph.order.size == 1)
-            return "1: [] "
+            return "1: [1] "
         else
             return ""
 
         graph.graph.forEach { it.visited = false }
         var i = 0
-
         for (vertex in graph.order) {
             if (!vertex.visited) {
                 val tmpComp = ArrayList<Int>()
@@ -75,19 +78,17 @@ class Kosaraju(var graph: OrientedGraph = OrientedGraph()): Algorithm {
                 val r = (0..255).random()
                 val g = (0..255).random()
                 val b = (0..255).random()
-
                 for (an in 0 until tmpComp.size) {
                     tmpComp[an] = tmpComp[an] + 1
                     graph.graph[tmpComp[an] - 1].circle.fill = Color.rgb(r, g, b)
                 }
                 i++
-
                 result = "$result$i: $tmpComp "
-
             }
         }
         println(result)
         graph.graph.forEach { it.visited = false }
+        graph.order.clear()
         return result
     }
     suspend fun dfsForStep(graph: OrientedGraph, vertex: Node, step: Int) {

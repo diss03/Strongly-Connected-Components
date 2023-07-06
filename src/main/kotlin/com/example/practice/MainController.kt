@@ -1,14 +1,18 @@
 package com.example.practice
 
 import javafx.fxml.FXML
+import javafx.scene.Group
 import javafx.scene.control.Button
 import javafx.scene.control.TextField
 import javafx.scene.input.MouseEvent
 import javafx.scene.layout.AnchorPane
+import javafx.scene.shape.Circle
 import javafx.scene.shape.Line
 import kotlinx.coroutines.*
+import javafx.scene.text.Text
 import java.net.URL
 import java.util.*
+import kotlin.time.times
 
 
 class MainController {
@@ -52,8 +56,8 @@ class MainController {
     private lateinit var draw: Drawablegraph
     private lateinit var obj: Kosaraju
     private var job: Job = Job()
-    private  var n: Int = 5
-    private  var m: Int = 7
+    private var n: Int = 5
+    private var m: Int = 7
 
     @FXML
     fun LoadBut(event: MouseEvent?) {
@@ -67,6 +71,7 @@ class MainController {
         draw.drawEdge()
         draw.drawText()
     }
+
     @FXML
     fun SaveBut(event: MouseEvent?){
         if (job.isActive)
@@ -86,11 +91,18 @@ class MainController {
     @FXML
     fun GenerateBut(event: MouseEvent) {
         if (job.isActive)
-        if(WindowForInput.text != ""){
+            job.cancel()
+        if (WindowForInput.text != "") {
             val Node_Edge = WindowForInput.text
-            this.n = Node_Edge.split(' ')[0].toInt()
-            this.m = Node_Edge.split(' ')[1].toInt()
-            WindowForInput.clear()
+            if (Node_Edge.split(' ')[0].toInt() >= 0 && Node_Edge.split(' ')[1].toInt() >= 0) {
+                this.n = Node_Edge.split(' ')[0].toInt()
+                this.m = Node_Edge.split(' ')[1].toInt()
+                WindowForInput.clear()
+            } else {
+                print("Pls, enter norm values :)")
+                WindowForInput.clear()
+                return
+            }
         }
         this.draw = Drawablegraph(FrontPane, n, m)
         ClearClicked(event)
@@ -98,6 +110,7 @@ class MainController {
         this.draw.drawEdge()
         this.draw.drawText()
     }
+
     @FXML
     fun StartAlgorithm(event: MouseEvent?) {
         if (job.isActive) {
@@ -107,6 +120,49 @@ class MainController {
         obj = Kosaraju(draw.graph)
         obj.start()
     }
+
+    @FXML
+
+    fun DeleteClick(event: MouseEvent?) {
+
+        for (node in draw.graph.graph) {
+            node.circle.setOnMouseClicked {
+                (run {
+                    FrontPane.children.clear()
+                    for (close1 in node.revadjacents) {
+                        if (node in close1.adjacents) {
+                            close1.adjacents.remove(node)
+                        }
+                    }
+                    for (close2 in node.adjacents) {
+                        if (node in close2.revadjacents) {
+                            close2.revadjacents.remove(node)
+                        }
+                    }
+
+                    if (node in draw.graph.order) {
+                        draw.graph.order.remove(node)
+                    }
+
+                    node.adjacents.clear()
+                    node.revadjacents.clear()
+                    val ind = draw.graph.graph.indexOf(node)
+                    draw.graph.graph.remove(node)
+
+                    for(i in ind until draw.graph.graph.size){
+                        draw.graph.graph[i].name -= 1
+                    }
+
+                    for (el in draw.graph.graph) {
+                        FrontPane.children.add(el.circle)
+                    }
+                    this.draw.drawEdge()
+                    this.draw.drawText()
+                })
+            }
+        }
+    }
+
     @FXML
     fun INputWindowClicked(event: MouseEvent) {
     }
