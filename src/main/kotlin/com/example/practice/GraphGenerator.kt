@@ -6,10 +6,14 @@ class GraphGenerator {
         val graph = ArrayList<Node>()
         var edges = m
         var nodes = n
-        if( m > n * (n - 1)){
+        if (m > n * (n - 1)) {
             println("Invalid data! It will be change to n*(n-1) & n.")
             edges = n * (n - 1)
             nodes = n
+        }
+        if (n < 0) {
+            edges = 0
+            nodes = 0
         }
         //если количество узлов/мостов отрицательно или равно 0 -> в циклы не входим
         for (i in 1..nodes) {

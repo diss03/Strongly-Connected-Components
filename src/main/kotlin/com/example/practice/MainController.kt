@@ -53,7 +53,6 @@ class MainController {
     private lateinit var draw: Drawablegraph
     private  var n: Int = 5
     private  var m: Int = 7
-    private lateinit var delete: Delete
 
     @FXML
     fun LoadBut(event: MouseEvent?) {
