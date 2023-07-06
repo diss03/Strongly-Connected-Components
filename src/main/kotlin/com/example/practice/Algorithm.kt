@@ -61,7 +61,6 @@ class Kosaraju(var graph: OrientedGraph = OrientedGraph()): Algorithm {
 
         graph.graph.forEach { it.visited = false }
         var i = 0
-
         for (vertex in graph.order) {
             if (!vertex.visited) {
                 val tmpComp = ArrayList<Int>()
@@ -70,19 +69,17 @@ class Kosaraju(var graph: OrientedGraph = OrientedGraph()): Algorithm {
                 val r = (0..255).random()
                 val g = (0..255).random()
                 val b = (0..255).random()
-
                 for (an in 0 until tmpComp.size) {
                     tmpComp[an] = tmpComp[an] + 1
                     graph.graph[tmpComp[an] - 1].circle.fill = Color.rgb(r, g, b)
                 }
                 i++
-
                 result = "$result$i: $tmpComp "
-
             }
         }
         println(result)
         graph.graph.forEach { it.visited = false }
+        graph.order.clear()
         return result
     }
 }
