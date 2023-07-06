@@ -6,8 +6,10 @@ import javafx.scene.control.TextField
 import javafx.scene.input.MouseEvent
 import javafx.scene.layout.AnchorPane
 import javafx.scene.shape.Line
+import javafx.scene.text.Text
 import java.net.URL
 import java.util.*
+import kotlin.time.times
 
 
 class MainController {
@@ -51,6 +53,7 @@ class MainController {
     private lateinit var draw: Drawablegraph
     private  var n: Int = 5
     private  var m: Int = 7
+    private lateinit var delete: Delete
 
     @FXML
     fun LoadBut(event: MouseEvent?) {
@@ -77,9 +80,17 @@ class MainController {
     fun GenerateBut(event: MouseEvent) {
         if(WindowForInput.text != ""){
             val Node_Edge = WindowForInput.text
-            this.n = Node_Edge.split(' ')[0].toInt()
-            this.m = Node_Edge.split(' ')[1].toInt()
-            WindowForInput.clear()
+            if(Node_Edge.split(' ')[0].toInt() >= 0 && Node_Edge.split(' ')[1].toInt() >= 0){
+                this.n = Node_Edge.split(' ')[0].toInt()
+                this.m = Node_Edge.split(' ')[1].toInt()
+                WindowForInput.clear()
+            }
+            else{
+                print("Pls, enter norm values :)")
+                WindowForInput.clear()
+                return
+            }
+
         }
         this.draw = Drawablegraph(FrontPane, n, m)
         ClearClicked(event)
@@ -92,6 +103,12 @@ class MainController {
         val obj = Kosaraju(draw.graph)
         obj.start()
     }
+
+    @FXML
+
+    fun DeleteClick(event: MouseEvent?) {
+    }
+
     @FXML
     fun INputWindowClicked(event: MouseEvent) {
     }
