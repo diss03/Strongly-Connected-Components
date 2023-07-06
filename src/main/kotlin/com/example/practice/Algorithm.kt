@@ -37,9 +37,6 @@ class Kosaraju(var graph: OrientedGraph = OrientedGraph()): Algorithm {
         timeout += 1
         vertex.timeout = timeout
         graph.order.add(vertex)
-//        timeout += 1
-
-        // а остальные компоненты???
     }
 
     fun dfs(graph: OrientedGraph, vertex: Node, tmpComp: ArrayList<Int>) {
