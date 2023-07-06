@@ -13,19 +13,23 @@ interface Algorithm{
 }
 
 class Kosaraju(var graph: OrientedGraph = OrientedGraph()): Algorithm {
-    private var timeout: Int = 1
+    private var timeout: Int = 0
     var n = graph.graph.size
 
     fun dfs(graph: OrientedGraph, vertex: Node) {
+        timeout += 1
         vertex.visited = true
         for (node in vertex.adjacents) {
             if (!node.visited) {
                 dfs(graph, node)
             }
         }
+        timeout += 1
         vertex.timeout = timeout
         graph.order.add(vertex)
-        timeout += 1
+//        timeout += 1
+
+        // а остальные компоненты???
     }
 
     fun dfs(graph: OrientedGraph, vertex: Node, tmpComp: ArrayList<Int>) {
