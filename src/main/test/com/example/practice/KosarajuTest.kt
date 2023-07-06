@@ -3,7 +3,6 @@ import com.example.practice.Loader
 import com.example.practice.Node
 import com.example.practice.OrientedGraph
 import org.junit.jupiter.api.Assertions.*
-import org.junit.jupiter.api.BeforeEach
 
 
 class KosarajuTest {
@@ -446,6 +445,28 @@ class KosarajuTest {
         }
         println(actual)
         val expected = "6 5 4 "
+        assertEquals(expected, actual)
+    }
+
+    @org.junit.jupiter.api.Test
+    @org.junit.jupiter.api.DisplayName("DFS: Graph with two components (4 vertexes, 4 ages)")
+    fun DFSTest13() {
+        var node_list: ArrayList<Node> = Loader().loadFromFile("test_graph_13.json")
+        kosaraju.n = 4
+        kosaraju.graph = OrientedGraph()
+        kosaraju.graph.graph = node_list
+
+        for (vertex in 0 until kosaraju.n) {
+            if (!kosaraju.graph.graph[vertex].visited) {
+                kosaraju.dfs(kosaraju.graph, kosaraju.graph.graph[vertex])
+            }
+        }
+        var actual = ""
+        for(i in 0 until kosaraju.graph.graph.size){
+            actual += "${kosaraju.graph.graph[i].timeout} "
+        }
+        println(actual)
+        val expected = "4 3 8 7 "
         assertEquals(expected, actual)
     }
 }
