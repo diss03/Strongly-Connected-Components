@@ -6,6 +6,7 @@ import javafx.scene.control.TextField
 import javafx.scene.input.MouseEvent
 import javafx.scene.layout.AnchorPane
 import javafx.scene.shape.Line
+import kotlinx.coroutines.*
 import java.net.URL
 import java.util.*
 
@@ -49,11 +50,15 @@ class MainController {
     private lateinit var StepBut: Button
 
     private lateinit var draw: Drawablegraph
+    private lateinit var obj: Kosaraju
+    private var job: Job = Job()
     private  var n: Int = 5
     private  var m: Int = 7
 
     @FXML
     fun LoadBut(event: MouseEvent?) {
+        if (job.isActive)
+            job.cancel()
         ClearClicked(event)
         val loader = Loader()
         draw.graph.clearGraph()
@@ -64,17 +69,23 @@ class MainController {
     }
     @FXML
     fun SaveBut(event: MouseEvent?){
+        if (job.isActive)
+            job.cancel()
         val saver = Saver()
         saver.saveToFile(draw.graph.graph)
     }
 
     @FXML
     fun ClearClicked(event: MouseEvent?) {
+        if (job.isActive)
+            job.cancel()
+        obj = Kosaraju(draw.graph)
         FrontPane.children.clear()
     }
 
     @FXML
     fun GenerateBut(event: MouseEvent) {
+        if (job.isActive)
         if(WindowForInput.text != ""){
             val Node_Edge = WindowForInput.text
             this.n = Node_Edge.split(' ')[0].toInt()
@@ -89,7 +100,11 @@ class MainController {
     }
     @FXML
     fun StartAlgorithm(event: MouseEvent?) {
-        val obj = Kosaraju(draw.graph)
+        if (job.isActive) {
+            job.cancel()
+            println("job is done!")
+        }
+        obj = Kosaraju(draw.graph)
         obj.start()
     }
     @FXML
@@ -97,8 +112,19 @@ class MainController {
     }
 
     @FXML
-    fun initialize() {
+    fun initialize(event: MouseEvent?) {
         this.draw = Drawablegraph(FrontPane, n, m)
+    }
+    fun stepBut(event: MouseEvent?){
+        var step = 1000
+        ClearClicked(event)
+        this.draw.drawNode()
+        this.draw.drawEdge()
+        this.draw.drawText()
+        obj = Kosaraju(draw.graph)
+        job = GlobalScope.launch(Dispatchers.Main){
+            obj.startForStep(draw, FrontPane, step)
+        }
     }
 
 }

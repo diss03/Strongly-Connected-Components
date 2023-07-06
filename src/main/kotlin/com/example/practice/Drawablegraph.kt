@@ -24,10 +24,51 @@ class Drawablegraph(var FrontPane: AnchorPane, n: Int = 5, m: Int = 7, var graph
             FrontPane.children.add(circle)
         }
     }
+    fun drawNodeWithColor(colors: MutableMap<Int, Color>){
+        val increment = 360.0/graph.graph.size
+        for(i in 0 until graph.graph.size){
+
+            val y = FrontPane.height / 2 + 200 * sin(Math.toRadians((increment*i)))
+            val x = FrontPane.width / 2 + 200 * cos(Math.toRadians((increment*i)))
+
+            val circle = graph.graph[i].createCircle(x, y, 15.0)
+            circle.fill = colors[i]
+            FrontPane.children.add(circle)
+        }
+    }
 
     fun drawEdge(){
         graph.graph.forEach {
             for(elem in it.adjacents){
+                val slope = (it.circle.centerY - elem.circle.centerY) / (it.circle.centerX - elem.circle.centerX)
+                val lineAngle = atan(slope)
+                val arrowAngle = if (it.circle.centerX >= elem.circle.centerX) Math.toRadians(11.0) else -Math.toRadians(168.0)
+                val line: Line
+                val arrow1 = Line()
+                val arrow2 = Line()
+                val arrowLength = 200 / 10
+                val arg1 = findCollision(it.circle.centerX, it.circle.centerY, elem.circle.centerX, elem.circle.centerY, elem.circle.radius)
+                val arg2 = findCollision(elem.circle.centerX, elem.circle.centerY, it.circle.centerX, it.circle.centerY, it.circle.radius)
+                val ax = arg1.first
+                val ay = arg1.second
+                val bx = arg2.first
+                val by = arg2.second
+                line = Line(bx + it.circle.centerX,by + it.circle.centerY,ax + elem.circle.centerX,ay + elem.circle.centerY)
+                arrow1.startX = ax + elem.circle.centerX
+                arrow1.startY = ay + elem.circle.centerY
+                arrow1.endX = ax + elem.circle.centerX + arrowLength * cos(lineAngle - arrowAngle)
+                arrow1.endY = ay + elem.circle.centerY + arrowLength * sin(lineAngle - arrowAngle)
+                arrow2.startX = ax + elem.circle.centerX
+                arrow2.startY = ay + elem.circle.centerY
+                arrow2.endX = ax + elem.circle.centerX + arrowLength * cos(lineAngle + arrowAngle)
+                arrow2.endY = ay + elem.circle.centerY + arrowLength * sin(lineAngle + arrowAngle)
+                FrontPane.children.addAll(line, arrow1, arrow2)
+            }
+        }
+    }
+    fun drawReverseEdge(){
+        graph.graph.forEach {
+            for(elem in it.revadjacents){
                 val slope = (it.circle.centerY - elem.circle.centerY) / (it.circle.centerX - elem.circle.centerX)
                 val lineAngle = atan(slope)
                 val arrowAngle = if (it.circle.centerX >= elem.circle.centerX) Math.toRadians(11.0) else -Math.toRadians(168.0)

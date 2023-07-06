@@ -3,6 +3,7 @@ module com.example.practice {
     requires javafx.fxml;
                 requires kotlin.stdlib;
     requires org.json;
+    requires kotlinx.coroutines.core;
 
 
     opens com.example.practice to javafx.fxml;

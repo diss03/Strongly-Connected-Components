@@ -4,6 +4,7 @@ import javafx.application.Application
 import javafx.fxml.FXMLLoader
 import javafx.scene.Scene
 import javafx.stage.Stage
+import kotlinx.coroutines.*
 
 
 class HelloApplication : Application() {
@@ -16,6 +17,6 @@ class HelloApplication : Application() {
     }
 }
 
-fun main() {
+fun main(){
     Application.launch(HelloApplication::class.java)
 }
