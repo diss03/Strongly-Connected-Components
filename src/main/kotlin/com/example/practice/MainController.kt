@@ -12,6 +12,7 @@ import kotlinx.coroutines.*
 import javafx.scene.text.Text
 import java.net.URL
 import java.util.*
+import kotlin.collections.ArrayList
 import kotlin.time.times
 
 
@@ -67,6 +68,7 @@ class MainController {
         val loader = Loader()
         draw.graph.clearGraph()
         draw.graph.graph = loader.loadFromFile("saved_graph.json")
+        obj = Kosaraju(draw.graph)
         draw.drawNode()
         draw.drawEdge()
         draw.drawText()
@@ -74,8 +76,13 @@ class MainController {
 
     @FXML
     fun SaveBut(event: MouseEvent?){
-        if (job.isActive)
+        if (job.isActive) {
             job.cancel()
+            FrontPane.children.clear()
+            draw.drawNode()
+            draw.drawEdge()
+            draw.drawText()
+        }
         val saver = Saver()
         saver.saveToFile(draw.graph.graph)
     }
@@ -106,6 +113,7 @@ class MainController {
             }
         }
         this.draw = Drawablegraph(FrontPane, n, m)
+        obj = Kosaraju(draw.graph)
         FrontPane.children.clear()
         this.draw.drawNode()
         this.draw.drawEdge()
@@ -116,9 +124,10 @@ class MainController {
     fun StartAlgorithm(event: MouseEvent?) {
         if (job.isActive) {
             job.cancel()
+            obj.graph.graph.forEach { it.visited = false }
+            obj.graph.order.clear()
             println("job is done!")
         }
-        obj = Kosaraju(draw.graph)
         obj.start()
     }
 
@@ -178,6 +187,8 @@ class MainController {
         this.draw = Drawablegraph(FrontPane, n, m)
     }
     fun stepBut(event: MouseEvent?){
+        if (job.isActive)
+            job.cancel()
         var step = 1000
         FrontPane.children.clear()
         this.draw.drawNode()
@@ -185,7 +196,16 @@ class MainController {
         this.draw.drawText()
         obj = Kosaraju(draw.graph)
         job = GlobalScope.launch(Dispatchers.Main){
-            obj.startForStep(draw, FrontPane, step)
+            try {
+                obj.startForStep(draw, FrontPane, step)
+            }
+            catch (er: CancellationException){
+                println("Step by step is cancelled")
+                obj.graph.graph.forEach { it.visited = false }
+                obj.graph.order.clear()
+            }
+        }.also {
+            it.invokeOnCompletion {  }
         }
     }
 
