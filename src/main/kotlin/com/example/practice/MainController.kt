@@ -69,6 +69,7 @@ class MainController {
 
     private lateinit var draw: Drawablegraph
     private lateinit var obj: Kosaraju
+    private val list_lines = ArrayList<Triple<Line, Node, Node>>()
     private var job: Job = Job()
     private var n: Int = 5
     private var m: Int = 7
@@ -153,9 +154,34 @@ class MainController {
         if (job.isActive)
             job.cancel()
         FrontPane.children.clear()
-        this.draw.drawNode()
+        this.draw.drawNodeWithStandart()
         this.draw.drawEdge()
         this.draw.drawText()
+        for(node in draw.graph.graph){
+            for(line in node.List_of_Lines){
+                list_lines.add(Triple(line.first, node, line.second))
+            }
+        }
+        for(line in list_lines){
+            line.first.setOnMouseClicked {
+                (run {
+                FrontPane.children.clear()
+                println("ubh")
+                line.second.adjacents.remove(line.third)
+                line.third.revadjacents.remove(line.second)
+                line.second.List_of_Lines.remove(Pair(line.first, line.third))
+
+                for (el in draw.graph.graph) {
+                    FrontPane.children.add(el.circle)
+                }
+
+                this.draw.drawEdge()
+                this.draw.drawText()
+                    for (node in draw.graph.graph) {
+                        node.circle.setOnMouseClicked {}
+                    }
+            }) }
+        }
         for (node in draw.graph.graph) {
             node.circle.setOnMouseClicked {
                 (run {
@@ -189,9 +215,13 @@ class MainController {
                     }
                     this.draw.drawEdge()
                     this.draw.drawText()
+                    for (node2 in draw.graph.graph) {
+                        node2.circle.setOnMouseClicked {}
+                    }
                 })
             }
         }
+
     }
 
     @FXML
@@ -204,7 +234,7 @@ class MainController {
         if (job.isActive)
             job.cancel()
         FrontPane.children.clear()
-        this.draw.drawNode()
+        this.draw.drawNodeWithStandart()
         this.draw.drawEdge()
         this.draw.drawText()
         obj = Kosaraju(label, draw.graph)

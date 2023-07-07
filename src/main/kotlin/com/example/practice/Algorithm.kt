@@ -137,7 +137,7 @@ class Kosaraju(var label: Label, var graph: OrientedGraph = OrientedGraph()): Al
         var i = 0
         delay(step.toDuration(DurationUnit.MILLISECONDS)/2) // для корректной работы логгера
         window.children.clear()
-        draw.drawNode()
+        draw.drawNodeWithStandart()
         draw.drawText()
         draw.drawReverseEdge()
         label.text += " - The edges have changed direction in the graph.\n"

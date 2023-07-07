@@ -25,14 +25,18 @@ class Drawablegraph(var FrontPane: AnchorPane, n: Int = 5, m: Int = 7, var graph
         }
     }
     fun drawNodeWithColor(colors: MutableMap<Int, Color>){
-        val increment = 360.0/graph.graph.size
         for(i in 0 until graph.graph.size){
 
-            val y = FrontPane.height / 2 + 200 * sin(Math.toRadians((increment*i)))
-            val x = FrontPane.width / 2 + 200 * cos(Math.toRadians((increment*i)))
-
-            val circle = graph.graph[i].createCircle(x, y, 20.0)
+            val circle = graph.graph[i].circle
             circle.fill = colors[i]
+            FrontPane.children.add(circle)
+        }
+    }
+    fun drawNodeWithStandart(){
+        for(i in 0 until graph.graph.size){
+
+            val circle = graph.graph[i].circle
+            circle.fill = Color.BLACK
             FrontPane.children.add(circle)
         }
     }
@@ -70,6 +74,7 @@ class Drawablegraph(var FrontPane: AnchorPane, n: Int = 5, m: Int = 7, var graph
                 arrow2.endY = ay + elem.circle.centerY + arrowLength * sin(lineAngle + arrowAngle)
                 line.strokeWidth = 3.0
                 FrontPane.children.addAll(line, arrow1, arrow2)
+                it.List_of_Lines.add(Pair(line, elem))
             }
         }
     }
@@ -100,7 +105,6 @@ class Drawablegraph(var FrontPane: AnchorPane, n: Int = 5, m: Int = 7, var graph
                 arrow2.endY = ay + elem.circle.centerY + arrowLength * sin(lineAngle + arrowAngle)
                 line.strokeWidth = 3.0
                 FrontPane.children.addAll(line, arrow1, arrow2)
-                it.List_of_Lines.add(Pair(line, elem))
             }
 
         }
