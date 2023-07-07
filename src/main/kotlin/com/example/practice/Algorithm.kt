@@ -1,8 +1,10 @@
 package com.example.practice
 
 import javafx.event.EventHandler
+import javafx.scene.control.Label
 import javafx.scene.layout.AnchorPane
 import javafx.scene.paint.Color
+import javafx.scene.text.Font
 import java.util.*
 import kotlinx.coroutines.*
 import java.lang.Thread.sleep
@@ -11,17 +13,14 @@ import kotlin.coroutines.*
 import kotlin.time.DurationUnit
 import kotlin.time.toDuration
 import kotlinx.coroutines.javafx.JavaFx as Main
-val scan = Scanner(System.`in`)
 
-//enum class Mode(val number: Int){
-//    AUTO(1), HAND(2)
-//}
+
 
 interface Algorithm{
     fun start(): String
 }
 
-class Kosaraju(var graph: OrientedGraph = OrientedGraph()): Algorithm {
+class Kosaraju(var label: Label, var graph: OrientedGraph = OrientedGraph()): Algorithm {
     private var timeout: Int = 0
     var n = graph.graph.size
     private var job: Job? = null
@@ -86,18 +85,21 @@ class Kosaraju(var graph: OrientedGraph = OrientedGraph()): Algorithm {
         println(result)
         graph.graph.forEach { it.visited = false }
         graph.order.clear()
+        label.text = " - The algorithm is completed. The components are built."
         return result
+
     }
     suspend fun dfsForStep(graph: OrientedGraph, vertex: Node, step: Int) {
         vertex.visited = true
         for (node in vertex.adjacents) {
             if (!node.visited) {
-                node.circle.fill = Color.RED
+                node.circle.fill = Color.GREEN
                 delay(step.toDuration(DurationUnit.MILLISECONDS))
                 dfsForStep(graph, node, step)
             }
         }
         vertex.timeout = timeout
+
         graph.order.add(vertex)
         timeout += 1
     }
@@ -113,14 +115,15 @@ class Kosaraju(var graph: OrientedGraph = OrientedGraph()): Algorithm {
         }
     }
     suspend fun startForStep(draw: Drawablegraph, window: AnchorPane, step: Int): String{
-        var result = ""
+        val result = ""
         for (vertex in 0 until n) {
             if (!graph.graph[vertex].visited) {
-                graph.graph[vertex].circle.fill = Color.RED
+                graph.graph[vertex].circle.fill = Color.GREEN
                 delay(step.toDuration(DurationUnit.MILLISECONDS))
                 dfsForStep(graph, graph.graph[vertex], step)
             }
         }
+        label.text = " - The first DFS has completed its work.\n"
 
         if (graph.order.size > 1)
             graph.order = graph.order.reversed() as ArrayList<Node>
@@ -130,27 +133,19 @@ class Kosaraju(var graph: OrientedGraph = OrientedGraph()): Algorithm {
             return ""
 
         graph.graph.forEach { it.visited = false }
-        var i = 0
-        /*
-        for (node in graph.graph){
-            val tmp = node.adjacents
-            node.adjacents = node.revadjacents
-            node.revadjacents = tmp
-        }
-        delay(1000)
-        for (node in graph.graph){
-            val tmp = node.adjacents
-            node.adjacents = node.revadjacents
-            node.revadjacents = tmp
-        }
 
-         */
+        var i = 0
+        delay(step.toDuration(DurationUnit.MILLISECONDS)/2) // для корректной работы логгера
         window.children.clear()
         draw.drawNode()
         draw.drawText()
         draw.drawReverseEdge()
-        delay(step.toDuration(DurationUnit.MILLISECONDS)/2)
-        var colors = mutableMapOf<Int, Color>()
+        label.text += " - The edges have changed direction in the graph.\n"
+        delay(step.toDuration(DurationUnit.MILLISECONDS))
+        label.text += " - The second DFS is starting...\n"
+
+        delay(step.toDuration(DurationUnit.MILLISECONDS))
+        val colors = mutableMapOf<Int, Color>()
         for (vertex in graph.order) {
             if (!vertex.visited) {
                 val tmpComp = ArrayList<Int>()
@@ -171,11 +166,14 @@ class Kosaraju(var graph: OrientedGraph = OrientedGraph()): Algorithm {
 
             }
         }
+        label.text += " - The components of strong connectivity are constructed.\n"
+        delay(step.toDuration(DurationUnit.MILLISECONDS)/2)
         graph.graph.forEach { it.visited = false }
         window.children.clear()
         draw.drawNodeWithColor(colors)
         draw.drawText()
         draw.drawEdge()
+        label.text += "- The edges have original direction in the graph.\n"
         return result
     }
 }
@@ -183,6 +181,4 @@ class Kosaraju(var graph: OrientedGraph = OrientedGraph()): Algorithm {
 
 //Для проверки работы алгоритма запускаем
 fun main() {
-    val ker = Kosaraju()
-    ker.start()
 }

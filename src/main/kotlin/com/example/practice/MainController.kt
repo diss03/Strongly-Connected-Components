@@ -1,18 +1,24 @@
 package com.example.practice
 
+import com.jfoenix.controls.JFXSlider
 import javafx.fxml.FXML
-import javafx.scene.Group
+import javafx.geometry.Insets
+import javafx.geometry.Pos
 import javafx.scene.control.Button
+import javafx.scene.control.Label
 import javafx.scene.control.TextField
 import javafx.scene.input.MouseEvent
 import javafx.scene.layout.AnchorPane
-import javafx.scene.shape.Circle
 import javafx.scene.shape.Line
-import kotlinx.coroutines.*
-import javafx.scene.text.Text
+import javafx.scene.text.Font
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.launch
 import java.net.URL
 import java.util.*
 import kotlin.collections.ArrayList
+import kotlin.coroutines.cancellation.CancellationException
 import kotlin.time.times
 
 
@@ -37,7 +43,7 @@ class MainController {
     private lateinit var DelBut: Button
 
     @FXML
-    lateinit var FrontPane: AnchorPane
+    private lateinit var FrontPane: AnchorPane
 
     @FXML
     private lateinit var LoadBut: Button
@@ -45,11 +51,18 @@ class MainController {
     @FXML
     private lateinit var SaveBut: Button
 
+
+    @FXML
+    private lateinit var slider: JFXSlider
+
     @FXML
     private lateinit var VertLine: Line
 
     @FXML
     private lateinit var WindowForInput: TextField
+
+    @FXML
+    private lateinit var label: Label
 
     @FXML
     private lateinit var StepBut: Button
@@ -62,13 +75,14 @@ class MainController {
 
     @FXML
     fun LoadBut(event: MouseEvent?) {
+        label.text = ""
         if (job.isActive)
             job.cancel()
         FrontPane.children.clear()
         val loader = Loader()
         draw.graph.clearGraph()
         draw.graph.graph = loader.loadFromFile("saved_graph.json")
-        obj = Kosaraju(draw.graph)
+        obj = Kosaraju(label, draw.graph)
         draw.drawNode()
         draw.drawEdge()
         draw.drawText()
@@ -89,6 +103,7 @@ class MainController {
 
     @FXML
     fun ClearClicked(event: MouseEvent?) {
+        label.text = ""
         if (job.isActive)
             job.cancel()
         //obj = Kosaraju(draw.graph)
@@ -98,6 +113,7 @@ class MainController {
 
     @FXML
     fun GenerateBut(event: MouseEvent) {
+        label.text = ""
         if (job.isActive)
             job.cancel()
         if (WindowForInput.text != "") {
@@ -113,7 +129,7 @@ class MainController {
             }
         }
         this.draw = Drawablegraph(FrontPane, n, m)
-        obj = Kosaraju(draw.graph)
+        obj = Kosaraju(label, draw.graph)
         FrontPane.children.clear()
         this.draw.drawNode()
         this.draw.drawEdge()
@@ -128,6 +144,7 @@ class MainController {
             obj.graph.order.clear()
             println("job is done!")
         }
+        obj = Kosaraju(label, draw.graph)
         obj.start()
     }
 
@@ -163,7 +180,7 @@ class MainController {
                     val ind = draw.graph.graph.indexOf(node)
                     draw.graph.graph.remove(node)
 
-                    for(i in ind until draw.graph.graph.size){
+                    for (i in ind until draw.graph.graph.size) {
                         draw.graph.graph[i].name -= 1
                     }
 
@@ -180,20 +197,17 @@ class MainController {
     @FXML
     fun INputWindowClicked(event: MouseEvent) {
     }
-
-    @FXML
-    fun initialize(event: MouseEvent?) {
-        this.draw = Drawablegraph(FrontPane, n, m)
-    }
     fun stepBut(event: MouseEvent?){
+        // label.font = Font(15.0)
+        label.text = ""
+        val step: Int = slider.value.toInt()
         if (job.isActive)
             job.cancel()
-        var step = 1000
         FrontPane.children.clear()
         this.draw.drawNode()
         this.draw.drawEdge()
         this.draw.drawText()
-        obj = Kosaraju(draw.graph)
+        obj = Kosaraju(label, draw.graph)
         job = GlobalScope.launch(Dispatchers.Main){
             try {
                 obj.startForStep(draw, FrontPane, step)
@@ -208,4 +222,8 @@ class MainController {
         }
     }
 
+    @FXML
+    fun initialize(event: MouseEvent?) {
+        this.draw = Drawablegraph(FrontPane, n, m)
+    }
 }

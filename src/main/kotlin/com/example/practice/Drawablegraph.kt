@@ -100,7 +100,9 @@ class Drawablegraph(var FrontPane: AnchorPane, n: Int = 5, m: Int = 7, var graph
                 arrow2.endY = ay + elem.circle.centerY + arrowLength * sin(lineAngle + arrowAngle)
                 line.strokeWidth = 3.0
                 FrontPane.children.addAll(line, arrow1, arrow2)
+                it.List_of_Lines.add(Pair(line, elem))
             }
+
         }
     }
 
