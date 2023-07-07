@@ -132,7 +132,6 @@ class MainController {
     }
 
     @FXML
-
     fun DeleteClick(event: MouseEvent?) {
         if (job.isActive)
             job.cancel()
