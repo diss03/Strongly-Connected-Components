@@ -1,4 +1,5 @@
 package com.example.practice
+import org.json.JSONException
 import java.io.File
 import org.json.JSONObject
 class Loader {
@@ -11,11 +12,18 @@ class Loader {
             graph.add(Node(i))
         }
         for (i in 1..nodenumb){
-            val arr = jsonObj.getJSONArray("$i")
+            var arr = jsonObj.getJSONArray("$i")
             for (item in arr){
                 graph[i - 1].adjacents.add(graph[item.toString().toInt() - 1])
                 graph[item.toString().toInt() - 1].revadjacents.add(graph[i - 1])
             }
+            try {
+                arr = jsonObj.getJSONArray("${i}.")
+                graph[i - 1].createCircle(arr[0].toString().toDouble(), arr[1].toString().toDouble(), 20.0)
+            }catch (error: JSONException){
+
+            }
+
         }
         return graph
     }

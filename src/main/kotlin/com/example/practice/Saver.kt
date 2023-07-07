@@ -13,6 +13,9 @@ class Saver {
             for (node in graph) {
                 json.put("${node.name}", GraphGenerator().intList(node.adjacents))
             }
+            for (node in graph) {
+                json.put("${node.name}.", mutableListOf(node.circle.centerX, node.circle.centerY))
+            }
         } catch (e: JSONException){
             e.printStackTrace()
         }

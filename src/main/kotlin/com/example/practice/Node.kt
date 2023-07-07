@@ -11,19 +11,16 @@ class Node(var name: Int, var x: Double = 0.0, var y: Double = 0.0, var r: Doubl
     var adjacents = ArrayList<Node>()
     var revadjacents = ArrayList<Node>()
     var circle = Circle(x, y, r)
-    var txt: Text = Text(x, y, "$name")
+    var txt = Text(x, y, "$name")
     var List_of_Lines = ArrayList<Pair<Line, Node>>()
 
     fun createCircle(x: Double, y: Double, r: Double): Circle{
-        this.x = x
-        this.y = y
-        this.r = r
         this.circle = Circle(x, y, r)
         return this.circle
     }
 
-    fun createText(): Text{
+    fun createText(name: Int, x: Double, y: Double): Text{
         this.txt = Text(x, y, "$name")
-        return txt
+        return this.txt
     }
 }

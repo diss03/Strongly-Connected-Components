@@ -13,6 +13,7 @@ class Drawablegraph(var FrontPane: AnchorPane, n: Int = 5, m: Int = 7, var graph
     }
 
     fun drawNode(){
+
         val increment = 360.0/graph.graph.size
         for(i in 0 until graph.graph.size){
 
@@ -21,12 +22,12 @@ class Drawablegraph(var FrontPane: AnchorPane, n: Int = 5, m: Int = 7, var graph
 
             val circle = graph.graph[i].createCircle(x, y, 20.0)
             circle.fill = Color.BLACK
+            circle.fill
             FrontPane.children.add(circle)
         }
     }
     fun drawNodeWithColor(colors: MutableMap<Int, Color>){
         for(i in 0 until graph.graph.size){
-
             val circle = graph.graph[i].circle
             circle.fill = colors[i]
             FrontPane.children.add(circle)
@@ -40,12 +41,6 @@ class Drawablegraph(var FrontPane: AnchorPane, n: Int = 5, m: Int = 7, var graph
             FrontPane.children.add(circle)
         }
     }
-    fun draw_existing_graph(tmp_graph: OrientedGraph){
-        for(node in tmp_graph.graph){
-            FrontPane.children.add(node.circle)
-        }
-    }
-
 
     fun drawEdge(){
         graph.graph.forEach {
@@ -72,9 +67,11 @@ class Drawablegraph(var FrontPane: AnchorPane, n: Int = 5, m: Int = 7, var graph
                 arrow2.startY = ay + elem.circle.centerY
                 arrow2.endX = ax + elem.circle.centerX + arrowLength * cos(lineAngle + arrowAngle)
                 arrow2.endY = ay + elem.circle.centerY + arrowLength * sin(lineAngle + arrowAngle)
-                line.strokeWidth = 3.0
-                FrontPane.children.addAll(line, arrow1, arrow2)
+                line.strokeWidth = 2.0
+                arrow1.strokeWidth = 2.0
+                arrow2.strokeWidth = 2.0
                 it.List_of_Lines.add(Pair(line, elem))
+                FrontPane.children.addAll(line, arrow1, arrow2)
             }
         }
     }
@@ -103,7 +100,9 @@ class Drawablegraph(var FrontPane: AnchorPane, n: Int = 5, m: Int = 7, var graph
                 arrow2.startY = ay + elem.circle.centerY
                 arrow2.endX = ax + elem.circle.centerX + arrowLength * cos(lineAngle + arrowAngle)
                 arrow2.endY = ay + elem.circle.centerY + arrowLength * sin(lineAngle + arrowAngle)
-                line.strokeWidth = 3.0
+                line.strokeWidth = 2.0
+                arrow1.strokeWidth = 2.0
+                arrow2.strokeWidth = 2.0
                 FrontPane.children.addAll(line, arrow1, arrow2)
             }
 
@@ -112,7 +111,9 @@ class Drawablegraph(var FrontPane: AnchorPane, n: Int = 5, m: Int = 7, var graph
 
     fun drawText(){
         for(i in 0 until graph.graph.size){
-            val text = graph.graph[i].createText()
+            val x = graph.graph[i].circle.centerX
+            val y = graph.graph[i].circle.centerY
+            val text = graph.graph[i].createText(i, x, y)
             text.font = Font(16.0)
             text.fill = Color.WHITE
             FrontPane.children.add(text)
@@ -154,7 +155,5 @@ class Drawablegraph(var FrontPane: AnchorPane, n: Int = 5, m: Int = 7, var graph
             return Pair(ax, ay)
         }
     }
-    fun create_graph(n: Int = 5, m: Int = 7){
-        graph.fillGraph(n, m)
-    }
+
 }

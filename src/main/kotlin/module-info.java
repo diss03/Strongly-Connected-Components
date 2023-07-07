@@ -5,6 +5,8 @@ module com.example.practice {
     requires org.json;
     requires kotlinx.coroutines.core;
     requires com.jfoenix;
+    requires java.desktop;
+    requires java.rmi;
 
 
     opens com.example.practice to javafx.fxml;
