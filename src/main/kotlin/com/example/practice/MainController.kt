@@ -69,6 +69,7 @@ class MainController {
 
     @FXML
     private lateinit var StepBut: Button
+
     @FXML
     private lateinit var GenBut: JFXButton
 
@@ -95,8 +96,8 @@ class MainController {
         val loader = Loader()
         draw.graph.clearGraph()
         draw.graph.graph = loader.loadFromFile("saved_graph.json")
-        obj = Kosaraju(draw.graph, Downlabel, label)
-        if(draw.graph.graph.size > 0 && draw.graph.graph[0].circle.centerX.toInt() == 0 && draw.graph.graph[1].circle.centerY.toInt() == 0)
+        obj = Kosaraju(Downlabel, label, draw.graph)
+        if (draw.graph.graph.size > 0 && draw.graph.graph[0].circle.centerX.toInt() == 0 && draw.graph.graph[1].circle.centerY.toInt() == 0)
             draw.drawNode()
         else
             draw.drawNodeWithStandart()
@@ -107,7 +108,7 @@ class MainController {
     }
 
     @FXML
-    fun SaveBut(event: MouseEvent?){
+    fun SaveBut(event: MouseEvent?) {
         label.text = ""
         Downlabel.text = ""
         MoveBut.isDisable = false
@@ -118,7 +119,7 @@ class MainController {
             draw.drawEdge()
             draw.drawText()
         }
-        if(draw.graph.graph.size > 0){
+        if (draw.graph.graph.size > 0) {
             val saver = Saver()
             saver.saveToFile(draw.graph.graph)
             Downlabel.text = " - The current graph  is saved."
@@ -133,8 +134,9 @@ class MainController {
         if (job.isActive)
             job.cancel()
         //obj = Kosaraju(draw.graph)
-        try{draw.graph.clearGraph()}
-        catch (er: kotlin.UninitializedPropertyAccessException){
+        try {
+            draw.graph.clearGraph()
+        } catch (er: kotlin.UninitializedPropertyAccessException) {
             return
         }
         FrontPane.children.clear()
@@ -144,27 +146,32 @@ class MainController {
     fun GenerateBut(event: MouseEvent) {
         MoveBut.isDisable = false
         draw = Drawablegraph(FrontPane, n, m)
+        Downlabel.text = " - The graph with $n vertexes and $m ages was built."
         label.text = ""
         if (job.isActive)
             job.cancel()
         if (WindowForInput.text != "") {
             val Node_Edge = WindowForInput.text
-            if (Node_Edge.split(' ').size in 2..3 && Node_Edge.split(' ')[0].toInt() > 0 && Node_Edge.split(' ')[1].toInt() >= 0) {
+            val regex = "((\\d?)|([1-9]\\d*)) ((\\d?)|([1-9]\\d*))".toRegex()
+            if (regex.matches(Node_Edge)) {
                 this.n = Node_Edge.split(' ')[0].toInt()
                 this.m = Node_Edge.split(' ')[1].toInt()
                 draw = Drawablegraph(FrontPane, n, m)
                 Downlabel.text = ""
-                if (m > n * (n - 1)) {
-                    Downlabel.text = " - Invalid data! It has change to n and n * (n-1)."
-                }
+                if (n == 0)
+                    Downlabel.text = " - Empty graph was built."
+                else if (m > n * (n - 1))
+                    Downlabel.text = " - Invalid data! It has been change to n vertexes and n * (n-1) ages."
+                else
+                    Downlabel.text = " - The graph with $n vertexes and $m ages was built."
                 WindowForInput.clear()
             } else {
-                Downlabel.text = "Enter correct values."
+                Downlabel.text = " - Incorrect input!"
                 WindowForInput.clear()
                 return
             }
         }
-        obj = Kosaraju(draw.graph, Downlabel, label)
+        obj = Kosaraju(Downlabel, label, draw.graph)
         FrontPane.children.clear()
         this.draw.drawNode()
         this.draw.drawEdge()
@@ -186,10 +193,9 @@ class MainController {
                 println("job is done!")
             }
 
-            obj = Kosaraju(draw.graph, Downlabel, label)
+            obj = Kosaraju(Downlabel, label, draw.graph)
             obj.start()
-        }
-        catch (er: kotlin.UninitializedPropertyAccessException){
+        } catch (er: kotlin.UninitializedPropertyAccessException) {
             return
         }
     }
@@ -272,13 +278,13 @@ class MainController {
                     })
                 }
             }
-        }catch (er: kotlin.UninitializedPropertyAccessException){
+        } catch (er: kotlin.UninitializedPropertyAccessException) {
             return
         }
 
     }
 
-    fun stepBut(event: MouseEvent?){
+    fun stepBut(event: MouseEvent?) {
         MoveBut.isDisable = false
         label.text = ""
         Downlabel.text = ""
@@ -291,10 +297,11 @@ class MainController {
             this.draw.drawNodeWithStandart()
             this.draw.drawEdge()
             this.draw.drawText()
-            obj = Kosaraju(draw.graph, Downlabel, label)
+            obj = Kosaraju(Downlabel, label, draw.graph)
             job = GlobalScope.launch(Dispatchers.Main) {
                 try {
-                    obj.startForStep(draw, FrontPane, step)
+                    if(draw.graph.graph.size > 0)
+                        obj.startForStep(draw, FrontPane, step)
                 } catch (er: CancellationException) {
                     println("Step by step is cancelled")
                     obj.graph.graph.forEach { it.visited = false }
@@ -303,29 +310,31 @@ class MainController {
             }.also {
                 it.invokeOnCompletion { }
             }
-        }catch (er: kotlin.UninitializedPropertyAccessException){
+        } catch (er: kotlin.UninitializedPropertyAccessException) {
             return
         }
 
     }
+
     @FXML
     fun initialize() {
-    //    this.draw = Drawablegraph(FrontPane, n, m)
+        //    this.draw = Drawablegraph(FrontPane, n, m)
     }
+
     var tmp_circle: Circle? = Circle(0.0, 0.0, 20.0)
     var x: Double = 0.0
     var y: Double = 0.0
 
     @FXML
     fun TestForPane(event: MouseEvent) {
-        if(MoveBut.isDisable){
+        if (MoveBut.isDisable) {
             val p = MouseInfo.getPointerInfo().location
             val point2D: Point2D = Point2D(event.x, event.y)
-            if(Circle(this.x, this.y, 20.0).contains(point2D) || MoveBut.contains(point2D)){
+            if (Circle(this.x, this.y, 20.0).contains(point2D) || MoveBut.contains(point2D)) {
                 return
             }
             FrontPane.children.clear()
-            tmp_circle?.centerX  = event.x
+            tmp_circle?.centerX = event.x
             tmp_circle?.centerY = event.y
 
             for (el in draw.graph.graph) {
@@ -338,6 +347,7 @@ class MainController {
         tmp_circle = null
         MoveBut.isDisable = false
     }
+
     @FXML
     fun MoveClicked(event: MouseEvent) {
         try {
@@ -360,7 +370,7 @@ class MainController {
                     }
                 }
             }
-        }catch (er: kotlin.UninitializedPropertyAccessException){
+        } catch (er: kotlin.UninitializedPropertyAccessException) {
             return
         }
 

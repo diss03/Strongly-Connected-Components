@@ -20,7 +20,7 @@ interface Algorithm{
     fun start(): String
 }
 
-class Kosaraju(var graph: OrientedGraph = OrientedGraph(), var downlabel: Label = Label(), var label: Label = Label(),): Algorithm {
+class Kosaraju(var downlabel: Label = Label(), var label: Label = Label(), var graph: OrientedGraph = OrientedGraph()): Algorithm {
     private var timeout: Int = 0
     var n = graph.graph.size
     private var job: Job? = null
@@ -60,7 +60,7 @@ class Kosaraju(var graph: OrientedGraph = OrientedGraph(), var downlabel: Label 
         if (graph.order.size > 1)
             graph.order = graph.order.reversed() as ArrayList<Node>
         else if (graph.order.size == 1)
-            return "1: [1] "
+//            return "1: [1] "
         else
             return ""
 
@@ -135,7 +135,7 @@ class Kosaraju(var graph: OrientedGraph = OrientedGraph(), var downlabel: Label 
         if (graph.order.size > 1)
             graph.order = graph.order.reversed() as ArrayList<Node>
         else if (graph.order.size == 1)
-            return "1: [] "
+//            return "1: [] "
         else
             return ""
 
