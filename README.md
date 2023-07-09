@@ -46,7 +46,7 @@
  
 Рис. 1 – Диаграмма сценариев использования приложения
 
- <img src="https://github.com/diss03/Strongly-Connected-Components/assets/90706633/66827d85-2828-4b75-845b-ff8387a5404d" width="600px" align="center">
+ <img src="https://github.com/diss03/Strongly-Connected-Components/assets/90706633/ba31451e-64bc-4e70-9aa5-27bc398acb24" width="600px" align="center">
  
 Рис. 2 – Макет графического интерфейса приложения
   
