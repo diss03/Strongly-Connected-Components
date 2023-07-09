@@ -17,7 +17,6 @@ import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 import java.awt.MouseInfo
 import java.net.URL
-import java.rmi.AccessException
 import java.util.*
 import kotlin.coroutines.cancellation.CancellationException
 
@@ -69,14 +68,13 @@ class MainController {
 
     @FXML
     private lateinit var StepBut: Button
-
     @FXML
     private lateinit var GenBut: JFXButton
 
     @FXML
     private lateinit var MoveBut: JFXButton
 
-    private lateinit var draw: Drawablegraph
+    private lateinit var draw: DrawableGraph
 
     private lateinit var obj: Kosaraju
     private val list_lines = ArrayList<Triple<Line, Node, Node>>()
@@ -91,13 +89,13 @@ class MainController {
         Downlabel.text = ""
         if (job.isActive)
             job.cancel()
-        draw = Drawablegraph(FrontPane)
+        draw = DrawableGraph(FrontPane)
         FrontPane.children.clear()
         val loader = Loader()
         draw.graph.clearGraph()
         draw.graph.graph = loader.loadFromFile("saved_graph.json")
         obj = Kosaraju(Downlabel, label, draw.graph)
-        if (draw.graph.graph.size > 0 && draw.graph.graph[0].circle.centerX.toInt() == 0 && draw.graph.graph[1].circle.centerY.toInt() == 0)
+        if(draw.graph.graph.size > 0 && draw.graph.graph[0].circle.centerX.toInt() == 0 && draw.graph.graph[1].circle.centerY.toInt() == 0)
             draw.drawNode()
         else
             draw.drawNodeWithStandart()
@@ -145,7 +143,7 @@ class MainController {
     @FXML
     fun GenerateBut(event: MouseEvent) {
         MoveBut.isDisable = false
-        draw = Drawablegraph(FrontPane, n, m)
+        draw = DrawableGraph(FrontPane, n, m)
         Downlabel.text = " - The graph with $n vertexes and $m ages was built."
         label.text = ""
         if (job.isActive)
@@ -156,12 +154,12 @@ class MainController {
             if (regex.matches(Node_Edge)) {
                 this.n = Node_Edge.split(' ')[0].toInt()
                 this.m = Node_Edge.split(' ')[1].toInt()
-                draw = Drawablegraph(FrontPane, n, m)
+                draw = DrawableGraph(FrontPane, n, m)
                 Downlabel.text = ""
                 if (n == 0)
                     Downlabel.text = " - Empty graph was built."
                 else if (m > n * (n - 1))
-                    Downlabel.text = " - Invalid data! It has been change to n vertexes and n * (n-1) ages."
+                    Downlabel.text = " - Invalid data! It has been change to \n n vertexes and n * (n-1) ages."
                 else
                     Downlabel.text = " - The graph with $n vertexes and $m ages was built."
                 WindowForInput.clear()
@@ -205,6 +203,7 @@ class MainController {
         label.text = ""
         Downlabel.text = ""
         MoveBut.isDisable = false
+        DelBut.isDisable = true
         if (job.isActive)
             job.cancel()
         FrontPane.children.clear()
@@ -300,8 +299,9 @@ class MainController {
             obj = Kosaraju(Downlabel, label, draw.graph)
             job = GlobalScope.launch(Dispatchers.Main) {
                 try {
-                    if(draw.graph.graph.size > 0)
+                    if(draw.graph.graph.size > 0){
                         obj.startForStep(draw, FrontPane, step)
+                    }
                 } catch (er: CancellationException) {
                     println("Step by step is cancelled")
                     obj.graph.graph.forEach { it.visited = false }
@@ -315,7 +315,6 @@ class MainController {
         }
 
     }
-
     @FXML
     fun initialize() {
         //    this.draw = Drawablegraph(FrontPane, n, m)
@@ -327,7 +326,8 @@ class MainController {
 
     @FXML
     fun TestForPane(event: MouseEvent) {
-        if (MoveBut.isDisable) {
+        DelBut.isDisable = false
+        if(MoveBut.isDisable){
             val p = MouseInfo.getPointerInfo().location
             val point2D: Point2D = Point2D(event.x, event.y)
             if (Circle(this.x, this.y, 20.0).contains(point2D) || MoveBut.contains(point2D)) {
@@ -373,6 +373,5 @@ class MainController {
         } catch (er: kotlin.UninitializedPropertyAccessException) {
             return
         }
-
     }
 }

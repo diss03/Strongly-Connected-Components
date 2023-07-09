@@ -20,7 +20,7 @@ interface Algorithm{
     fun start(): String
 }
 
-class Kosaraju(var downlabel: Label = Label(), var label: Label = Label(), var graph: OrientedGraph = OrientedGraph()): Algorithm {
+class Kosaraju(var downlabel: Label = Label(""), var label: Label = Label(""), var graph: OrientedGraph = OrientedGraph()): Algorithm {
     private var timeout: Int = 0
     var n = graph.graph.size
     private var job: Job? = null
@@ -60,7 +60,7 @@ class Kosaraju(var downlabel: Label = Label(), var label: Label = Label(), var g
         if (graph.order.size > 1)
             graph.order = graph.order.reversed() as ArrayList<Node>
         else if (graph.order.size == 1)
-//            return "1: [1] "
+//          return "1: [1] "
         else
             return ""
 
@@ -118,7 +118,7 @@ class Kosaraju(var downlabel: Label = Label(), var label: Label = Label(), var g
             }
         }
     }
-    suspend fun startForStep(draw: Drawablegraph, window: AnchorPane, step: Int): String{
+    suspend fun startForStep(draw: DrawableGraph, window: AnchorPane, step: Int): String{
         val result = ""
         delay(step.toDuration(DurationUnit.MILLISECONDS))
         label.text += " - The first DFS is starting...\n"
@@ -135,7 +135,7 @@ class Kosaraju(var downlabel: Label = Label(), var label: Label = Label(), var g
         if (graph.order.size > 1)
             graph.order = graph.order.reversed() as ArrayList<Node>
         else if (graph.order.size == 1)
-//            return "1: [] "
+           // return "1: [] "
         else
             return ""
 
@@ -206,4 +206,5 @@ class Kosaraju(var downlabel: Label = Label(), var label: Label = Label(), var g
 
 //Для проверки работы алгоритма запускаем
 fun main() {
+
 }

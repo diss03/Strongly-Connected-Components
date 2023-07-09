@@ -6,7 +6,7 @@ import javafx.scene.shape.Line
 import javafx.scene.text.Font
 import kotlin.math.*
 
-class DrawableGraph(var FrontPane: AnchorPane, n: Int = 5, m: Int = 7, var graph: OrientedGraph = OrientedGraph()){
+class Drawablegraph(var FrontPane: AnchorPane, n: Int = 5, m: Int = 7, var graph: OrientedGraph = OrientedGraph()){
 
     init{
         graph.fillGraph(n, m)

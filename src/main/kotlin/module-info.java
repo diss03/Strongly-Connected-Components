@@ -7,6 +7,8 @@ module com.example.practice {
     requires com.jfoenix;
     requires java.desktop;
     requires java.rmi;
+    requires junit;
+    requires jfx.testrunner;
 
 
     opens com.example.practice to javafx.fxml;
