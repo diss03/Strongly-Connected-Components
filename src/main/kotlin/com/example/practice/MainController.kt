@@ -11,10 +11,7 @@ import javafx.scene.input.MouseEvent
 import javafx.scene.layout.AnchorPane
 import javafx.scene.shape.Circle
 import javafx.scene.shape.Line
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.Job
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.*
 import java.awt.MouseInfo
 import java.net.URL
 import java.util.*
@@ -68,6 +65,7 @@ class MainController {
 
     @FXML
     private lateinit var StepBut: Button
+
     @FXML
     private lateinit var GenBut: JFXButton
 
@@ -79,12 +77,14 @@ class MainController {
     private lateinit var obj: Kosaraju
     private val list_lines = ArrayList<Triple<Line, Node, Node>>()
     private var job: Job = Job()
+    private var job2: Job = Job()
     private var n: Int = 5
     private var m: Int = 7
 
     @FXML
     fun LoadBut(event: MouseEvent?) {
         MoveBut.isDisable = false
+        DelBut.isDisable = false
         label.text = ""
         Downlabel.text = ""
         if (job.isActive)
@@ -95,7 +95,7 @@ class MainController {
         draw.graph.clearGraph()
         draw.graph.graph = loader.loadFromFile("saved_graph.json")
         obj = Kosaraju(Downlabel, label, draw.graph)
-        if(draw.graph.graph.size > 0 && draw.graph.graph[0].circle.centerX.toInt() == 0 && draw.graph.graph[1].circle.centerY.toInt() == 0)
+        if (draw.graph.graph.size > 0 && draw.graph.graph[0].circle.centerX.toInt() == 0 && draw.graph.graph[1].circle.centerY.toInt() == 0)
             draw.drawNode()
         else
             draw.drawNodeWithStandart()
@@ -110,6 +110,7 @@ class MainController {
         label.text = ""
         Downlabel.text = ""
         MoveBut.isDisable = false
+        DelBut.isDisable = false
         if (job.isActive) {
             job.cancel()
             FrontPane.children.clear()
@@ -126,6 +127,7 @@ class MainController {
 
     @FXML
     fun ClearClicked(event: MouseEvent?) {
+        DelBut.isDisable = false
         MoveBut.isDisable = false
         label.text = ""
         Downlabel.text = ""
@@ -142,6 +144,7 @@ class MainController {
 
     @FXML
     fun GenerateBut(event: MouseEvent) {
+        DelBut.isDisable = false
         MoveBut.isDisable = false
         draw = DrawableGraph(FrontPane, n, m)
         Downlabel.text = " - The graph with $n vertexes and $m ages was built."
@@ -181,12 +184,11 @@ class MainController {
         label.text = ""
         Downlabel.text = ""
         MoveBut.isDisable = false
+        DelBut.isDisable = false
         try {
             obj.graph.graph.forEach { it.visited = false }
             if (job.isActive) {
                 job.cancel()
-
-
                 obj.graph.order.clear()
                 println("job is done!")
             }
@@ -203,87 +205,88 @@ class MainController {
         label.text = ""
         Downlabel.text = ""
         MoveBut.isDisable = false
-        DelBut.isDisable = true
         if (job.isActive)
             job.cancel()
-        FrontPane.children.clear()
 
-        try {
-            this.draw.drawNodeWithStandart()
-            this.draw.drawEdge()
-            this.draw.drawText()
-            for (node in draw.graph.graph) {
-                for (line in node.List_of_Lines) {
-                    list_lines.add(Triple(line.first, node, line.second))
+        if (draw.graph.graph.size > 0){
+            DelBut.isDisable = true
+            try {
+                FrontPane.children.clear()
+                draw.drawNodeWithStandart()
+                draw.drawEdge()
+                draw.drawText()
+                for (node in draw.graph.graph) {
+                    for (line in node.List_of_Lines) {
+                        list_lines.add(Triple(line.first, node, line.second))
+                    }
                 }
-            }
-            for (line in list_lines) {
-                line.first.setOnMouseClicked {
-                    (run {
-                        FrontPane.children.clear()
-                        println("ubh")
-                        line.second.adjacents.remove(line.third)
-                        line.third.revadjacents.remove(line.second)
-                        line.second.List_of_Lines.remove(Pair(line.first, line.third))
+                for (line in list_lines) {
+                    line.first.setOnMouseClicked {
+                        (run {
+                            FrontPane.children.clear()
+                            line.second.adjacents.remove(line.third)
+                            line.third.revadjacents.remove(line.second)
+                            line.second.List_of_Lines.remove(Pair(line.first, line.third))
 
-                        for (el in draw.graph.graph) {
-                            FrontPane.children.add(el.circle)
-                        }
-
-                        this.draw.drawEdge()
-                        this.draw.drawText()
-                        for (node in draw.graph.graph) {
-                            node.circle.setOnMouseClicked {}
-                        }
-                    })
-                }
-            }
-            for (node in draw.graph.graph) {
-                node.circle.setOnMouseClicked {
-                    (run {
-                        FrontPane.children.clear()
-                        for (close1 in node.revadjacents) {
-                            if (node in close1.adjacents) {
-                                close1.adjacents.remove(node)
+                            for (el in draw.graph.graph) {
+                                FrontPane.children.add(el.circle)
                             }
-                        }
-                        for (close2 in node.adjacents) {
-                            if (node in close2.revadjacents) {
-                                close2.revadjacents.remove(node)
+
+                            draw.drawEdge()
+                            draw.drawText()
+                            for (line2 in list_lines) {
+                                line2.first.setOnMouseClicked {}
                             }
-                        }
-
-                        if (node in draw.graph.order) {
-                            draw.graph.order.remove(node)
-                        }
-
-                        node.adjacents.clear()
-                        node.revadjacents.clear()
-                        val ind = draw.graph.graph.indexOf(node)
-                        draw.graph.graph.remove(node)
-
-                        for (i in ind until draw.graph.graph.size) {
-                            draw.graph.graph[i].name -= 1
-                        }
-
-                        for (el in draw.graph.graph) {
-                            FrontPane.children.add(el.circle)
-                        }
-                        this.draw.drawEdge()
-                        this.draw.drawText()
-                        for (node2 in draw.graph.graph) {
-                            node2.circle.setOnMouseClicked {}
-                        }
-                    })
+                        })
+                    }
                 }
+                for (node in draw.graph.graph) {
+                    node.circle.setOnMouseClicked {
+                        (run {
+                            FrontPane.children.clear()
+                            for (close1 in node.revadjacents) {
+                                if (node in close1.adjacents) {
+                                    close1.adjacents.remove(node)
+                                }
+                            }
+                            for (close2 in node.adjacents) {
+                                if (node in close2.revadjacents) {
+                                    close2.revadjacents.remove(node)
+                                }
+                            }
+
+                            if (node in draw.graph.order) {
+                                draw.graph.order.remove(node)
+                            }
+
+                            node.adjacents.clear()
+                            node.revadjacents.clear()
+                            val ind = draw.graph.graph.indexOf(node)
+                            draw.graph.graph.remove(node)
+
+                            for (i in ind until draw.graph.graph.size) {
+                                draw.graph.graph[i].name -= 1
+                            }
+
+                            for (el in draw.graph.graph) {
+                                FrontPane.children.add(el.circle)
+                            }
+                            draw.drawEdge()
+                            draw.drawText()
+                            for (node2 in draw.graph.graph) {
+                                node2.circle.setOnMouseClicked {}
+                            }
+                        })
+                    }
+                }
+            } catch (er: kotlin.UninitializedPropertyAccessException) {
+                return
             }
-        } catch (er: kotlin.UninitializedPropertyAccessException) {
-            return
         }
-
     }
 
     fun stepBut(event: MouseEvent?) {
+        DelBut.isDisable = false
         MoveBut.isDisable = false
         label.text = ""
         Downlabel.text = ""
@@ -299,7 +302,7 @@ class MainController {
             obj = Kosaraju(Downlabel, label, draw.graph)
             job = GlobalScope.launch(Dispatchers.Main) {
                 try {
-                    if(draw.graph.graph.size > 0){
+                    if (draw.graph.graph.size > 0) {
                         obj.startForStep(draw, FrontPane, step)
                     }
                 } catch (er: CancellationException) {
@@ -315,6 +318,7 @@ class MainController {
         }
 
     }
+
     @FXML
     fun initialize() {
         //    this.draw = Drawablegraph(FrontPane, n, m)
@@ -327,7 +331,16 @@ class MainController {
     @FXML
     fun TestForPane(event: MouseEvent) {
         DelBut.isDisable = false
-        if(MoveBut.isDisable){
+        for (node in draw.graph.graph) {
+            node.circle.setOnMouseClicked {}
+        }
+        for (line2 in list_lines) {
+            line2.first.setOnMouseClicked {}
+        }
+
+
+
+        if (MoveBut.isDisable) {
             val p = MouseInfo.getPointerInfo().location
             val point2D: Point2D = Point2D(event.x, event.y)
             if (Circle(this.x, this.y, 20.0).contains(point2D) || MoveBut.contains(point2D)) {
@@ -350,6 +363,7 @@ class MainController {
 
     @FXML
     fun MoveClicked(event: MouseEvent) {
+        DelBut.isDisable = false
         try {
             if (draw.graph.graph.size > 0) {
                 MoveBut.isDisable = true
@@ -375,3 +389,5 @@ class MainController {
         }
     }
 }
+
+
