@@ -20,7 +20,7 @@ interface Algorithm{
     fun start(): String
 }
 
-class Kosaraju(var downlabel: Label, var label: Label, var graph: OrientedGraph = OrientedGraph()): Algorithm {
+class Kosaraju(var graph: OrientedGraph = OrientedGraph(), var downlabel: Label = Label(), var label: Label = Label(),): Algorithm {
     private var timeout: Int = 0
     var n = graph.graph.size
     private var job: Job? = null

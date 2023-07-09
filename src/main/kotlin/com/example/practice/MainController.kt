@@ -95,7 +95,7 @@ class MainController {
         val loader = Loader()
         draw.graph.clearGraph()
         draw.graph.graph = loader.loadFromFile("saved_graph.json")
-        obj = Kosaraju(Downlabel, label, draw.graph)
+        obj = Kosaraju(draw.graph, Downlabel, label)
         if(draw.graph.graph.size > 0 && draw.graph.graph[0].circle.centerX.toInt() == 0 && draw.graph.graph[1].circle.centerY.toInt() == 0)
             draw.drawNode()
         else
@@ -164,7 +164,7 @@ class MainController {
                 return
             }
         }
-        obj = Kosaraju(Downlabel, label, draw.graph)
+        obj = Kosaraju(draw.graph, Downlabel, label)
         FrontPane.children.clear()
         this.draw.drawNode()
         this.draw.drawEdge()
@@ -186,7 +186,7 @@ class MainController {
                 println("job is done!")
             }
 
-            obj = Kosaraju(Downlabel, label, draw.graph)
+            obj = Kosaraju(draw.graph, Downlabel, label)
             obj.start()
         }
         catch (er: kotlin.UninitializedPropertyAccessException){
@@ -291,7 +291,7 @@ class MainController {
             this.draw.drawNodeWithStandart()
             this.draw.drawEdge()
             this.draw.drawText()
-            obj = Kosaraju(Downlabel, label, draw.graph)
+            obj = Kosaraju(draw.graph, Downlabel, label)
             job = GlobalScope.launch(Dispatchers.Main) {
                 try {
                     obj.startForStep(draw, FrontPane, step)
