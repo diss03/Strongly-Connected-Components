@@ -42,7 +42,7 @@
 
 Диаграмма сценариев представлена на рисунке 1, макет интерфейса – на рисунке 2. 	
 
- <img src="https://github.com/diss03/Strongly-Connected-Components/assets/90706633/db50dc9d-bfe8-4ad7-95f2-05b046bda75f" width="600px" align="center">
+ <img src="https://github.com/diss03/Strongly-Connected-Components/assets/90706633/589cb509-4c2c-49ca-bb35-6b48583d4638" width="600px" align="center">
  
 Рис. 1 – Диаграмма сценариев использования приложения
 
