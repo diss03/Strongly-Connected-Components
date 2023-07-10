@@ -12,7 +12,10 @@ import javafx.scene.layout.AnchorPane
 import javafx.scene.shape.Circle
 import javafx.scene.shape.Line
 import kotlinx.coroutines.*
+//import java.awt.Color
 import java.awt.MouseInfo
+import javafx.scene.paint.Color
+import java.awt.Paint
 import java.net.URL
 import java.util.*
 import kotlin.coroutines.cancellation.CancellationException
@@ -370,10 +373,26 @@ class MainController {
                 try {
                     if (draw.graph.graph.size > 0) {
                         obj.startForStep(draw, FrontPane, step)
+                        obj.graph.graph.forEach {
+                            it.visited = false
+                            for (line in it.List_of_Lines){
+                                line.first.second.stroke = Color.BLACK
+                                line.first.first.stroke = Color.BLACK
+                                line.first.third.stroke = Color.BLACK
+                            }
+                        }
+                        obj.graph.order.clear()
                     }
                 } catch (er: CancellationException) {
                     println("Step by step is cancelled")
-                    obj.graph.graph.forEach { it.visited = false }
+                    obj.graph.graph.forEach {
+                        it.visited = false
+                        for (line in it.List_of_Lines){
+                            line.first.second.stroke = Color.BLACK
+                            line.first.first.stroke = Color.BLACK
+                            line.first.third.stroke = Color.BLACK
+                        }
+                    }
                     obj.graph.order.clear()
                 }
             }.also {

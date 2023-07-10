@@ -119,13 +119,25 @@ class Kosaraju(var downlabel: Label = Label(""), var label: Label = Label(""), v
         timeout += 1
     }
 
-    suspend fun dfsForStep(graph: OrientedGraph, vertex: Node, tmpComp: ArrayList<Int>) {
+    suspend fun dfsForStep(graph: OrientedGraph, vertex: Node, tmpComp: ArrayList<Int>, colors: MutableMap<Int, Color>, step: Int, rgb: IntArray) {
         vertex.visited = true
         tmpComp.add(vertex.name - 1)
-
+        vertex.circle.fill = Color.rgb(rgb[0], rgb[1], rgb[2])
+        colors.put(vertex.name - 1, Color.rgb(rgb[0], rgb[1], rgb[2]))
+        downlabel.text = " - Vertex ${vertex.name - 1} is colored."
+        delay(step.toDuration(DurationUnit.MILLISECONDS))
         for (node in vertex.revadjacents) {
             if (!node.visited) {
-                dfsForStep(graph, node, tmpComp)
+                for (line in vertex.List_of_Lines)
+                    if (line.second == node) {
+                        line.first.first.stroke = Color.rgb(rgb[0], rgb[1], rgb[2])
+                        line.first.second.stroke = Color.rgb(rgb[0], rgb[1], rgb[2])
+                        line.first.third.stroke = Color.rgb(rgb[0], rgb[1], rgb[2])
+                        for (line2 in node.List_of_Lines)
+                            if (line2.second == vertex)
+                                line2.first.first.stroke = Color.rgb(rgb[0], rgb[1], rgb[2])
+                    }
+                dfsForStep(graph, node, tmpComp, colors, step, rgb)
             }
         }
     }
@@ -163,41 +175,20 @@ class Kosaraju(var downlabel: Label = Label(""), var label: Label = Label(""), v
         delay(step.toDuration(DurationUnit.MILLISECONDS))
         label.text += " - The second DFS is starting...\n"
 
+        var r = (0..255).random()
+        var g = (0..255).random()
+        var b = (0..255).random()
         delay(step.toDuration(DurationUnit.MILLISECONDS))
         val colors = mutableMapOf<Int, Color>()
         for (vertex in graph.order) {
             if (!vertex.visited) {
                 val tmpComp = ArrayList<Int>()
-                dfsForStep(graph, vertex, tmpComp)
+                r = (0..255).random()
+                g = (0..255).random()
+                b = (0..255).random()
+                dfsForStep(graph, vertex, tmpComp, colors, step, intArrayOf(r, g, b))
 
-                val r = (0..255).random()
-                val g = (0..255).random()
-                val b = (0..255).random()
                 downlabel.text = " - Component definition $i: "
-                delay(step.toDuration(DurationUnit.MILLISECONDS))
-                for (an in 0 until tmpComp.size) {
-                    tmpComp[an] = tmpComp[an] + 1
-                    //if (an > 0){
-                      //  for (node in graph.graph[tmpComp[an] - 1].revadjacents)
-                        //    if (node.n)
-                    //}
-//                    if (an > 0) {
-//                        for (node in graph.graph[tmpComp[an] - 1].revadjacents) {
-//                            if (node.name == tmpComp[an - 1])
-//                                for (line in node.List_of_Lines) {
-//                                    if (line.second == graph.graph[tmpComp[an] - 1]) {
-//                                        line.first.first.stroke = Color.MEDIUMSEAGREEN
-//                                        line.first.second.stroke = Color.MEDIUMSEAGREEN
-//                                        line.first.third.stroke = Color.MEDIUMSEAGREEN
-//                                    }
-//                                }
-//                        }
-//                    }
-                    graph.graph[tmpComp[an] - 1].circle.fill = Color.rgb(r, g, b)
-                    downlabel.text = " - Vertex ${graph.graph[tmpComp[an] - 1].name - 1} is colored."
-                    colors.put(tmpComp[an] - 1, Color.rgb(r, g, b))
-                    delay(step.toDuration(DurationUnit.MILLISECONDS))
-                }
                 i++
 
             }

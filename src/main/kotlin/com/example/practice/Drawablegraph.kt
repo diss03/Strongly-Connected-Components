@@ -22,7 +22,6 @@ class DrawableGraph(var FrontPane: AnchorPane, n: Int = 5, m: Int = 7, var graph
 
             val circle = graph.graph[i].createCircle(x, y, 20.0)
             circle.fill = Color.BLACK
-            circle.fill
             FrontPane.children.add(circle)
         }
     }
@@ -43,12 +42,9 @@ class DrawableGraph(var FrontPane: AnchorPane, n: Int = 5, m: Int = 7, var graph
     }
 
     fun drawEdge(){
-        var doubleEdge = false
         graph.graph.forEach {
+            it.List_of_Lines.clear()
             for(elem in it.adjacents){
-                for (node in it.revadjacents)
-                    if (node.name == elem.name)
-                        doubleEdge = true
                 val slope = (it.circle.centerY - elem.circle.centerY) / (it.circle.centerX - elem.circle.centerX)
                 val lineAngle = atan(slope)
                 val arrowAngle = if (it.circle.centerX >= elem.circle.centerX) Math.toRadians(20.0) else -Math.toRadians(159.0)
@@ -85,6 +81,7 @@ class DrawableGraph(var FrontPane: AnchorPane, n: Int = 5, m: Int = 7, var graph
     }
     fun drawReverseEdge(){
         graph.graph.forEach {
+            it.List_of_Lines.clear()
             for(elem in it.revadjacents){
                 val slope = (it.circle.centerY - elem.circle.centerY) / (it.circle.centerX - elem.circle.centerX)
                 val lineAngle = atan(slope)
@@ -130,7 +127,39 @@ class DrawableGraph(var FrontPane: AnchorPane, n: Int = 5, m: Int = 7, var graph
             FrontPane.children.add(text)
         }
     }
+    /*
+    fun drawSingle(node1 : Node, node2: Node){
+        val slope = (node1.circle.centerY - node2.circle.centerY) / (node1.circle.centerX - node2.circle.centerX)
+        val lineAngle = atan(slope)
+        val arrowAngle = if (node1.circle.centerX >= node1.circle.centerX) Math.toRadians(11.0) else -Math.toRadians(168.0)
+        val line: Line
+        val arrow1 = Line()
+        val arrow2 = Line()
+        val arrowLength = 200 / 10
+        val arg1 = findCollision(it.circle.centerX, it.circle.centerY, elem.circle.centerX, elem.circle.centerY, elem.circle.radius)
+        val arg2 = findCollision(elem.circle.centerX, elem.circle.centerY, it.circle.centerX, it.circle.centerY, it.circle.radius)
+        val ax = arg1.first
+        val ay = arg1.second
+        val bx = arg2.first
+        val by = arg2.second
+        line = Line(bx + it.circle.centerX,by + it.circle.centerY,ax + elem.circle.centerX,ay + elem.circle.centerY)
+        arrow1.startX = ax + elem.circle.centerX
+        arrow1.startY = ay + elem.circle.centerY
+        arrow1.endX = ax + elem.circle.centerX + arrowLength * cos(lineAngle - arrowAngle)
+        arrow1.endY = ay + elem.circle.centerY + arrowLength * sin(lineAngle - arrowAngle)
+        arrow2.startX = ax + elem.circle.centerX
+        arrow2.startY = ay + elem.circle.centerY
+        arrow2.endX = ax + elem.circle.centerX + arrowLength * cos(lineAngle + arrowAngle)
+        arrow2.endY = ay + elem.circle.centerY + arrowLength * sin(lineAngle + arrowAngle)
+        line.strokeWidth = 2.0
+        arrow1.strokeWidth = 2.0
+        arrow2.strokeWidth = 2.0
+        it.List_of_Lines.add(Pair(line, elem))
+        FrontPane.children.addAll(line, arrow1, arrow2)
+    }
 
+
+     */
     /**
      * Функция находящая точку соприкосновнения прямой и окружности
      * @param x1 Точка через которую проходит прямая
