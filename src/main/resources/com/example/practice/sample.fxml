@@ -1,27 +1,21 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import com.jfoenix.controls.JFXButton?>
-<?import com.jfoenix.controls.JFXSlider?>
-<?import javafx.geometry.Insets?>
-<?import javafx.scene.Cursor?>
-<?import javafx.scene.control.Label?>
-<?import javafx.scene.control.TextField?>
-<?import javafx.scene.effect.DropShadow?>
-<?import javafx.scene.layout.AnchorPane?>
-<?import javafx.scene.layout.VBox?>
-<?import javafx.scene.paint.Color?>
-<?import javafx.scene.shape.Line?>
-<?import javafx.scene.text.Font?>
-<?import javafx.scene.text.Text?>
+<?import com.jfoenix.controls.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.effect.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.paint.*?>
+<?import javafx.scene.text.*?>
 
-<VBox alignment="CENTER" prefHeight="882.0" prefWidth="1240.0" spacing="20.0" style="-fx-background-color: White; -fx-border-color: black; -fx-border-width: 2;" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.practice.MainController">
-    <padding>
-        <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
-    </padding>
+<VBox alignment="CENTER" prefHeight="882.0" prefWidth="1240.0" spacing="20.0" style="-fx-background-color: White; -fx-border-color: black; -fx-border-width: 2;" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.practice.MainController">
+   <padding>
+      <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+   </padding>
    <AnchorPane fx:id="BackPane" prefHeight="812.0" prefWidth="1196.0" style="-fx-background-color: white;">
       <children>
-         <Line fx:id="VertLine" endX="-610.0" endY="-708.0" fill="BLACK" layoutX="814.0" layoutY="518.0" startX="-610.0" startY="294.0" strokeWidth="2.0" />
-         <TextField fx:id="WindowForInput" layoutX="55.0" layoutY="231.0" prefHeight="27.0" prefWidth="85.0" promptText="5 7" style="-fx-border-color: black;">
+         <TextField fx:id="WindowForInput" layoutX="55.0" layoutY="231.0" prefHeight="27.0" prefWidth="85.0" promptText="5 7" style="-fx-border-color: black;" AnchorPane.leftAnchor="55.0" AnchorPane.topAnchor="220.0">
             <cursor>
                <Cursor fx:constant="TEXT" />
             </cursor>
@@ -32,63 +26,63 @@
                   </color>
                </DropShadow>
             </effect></TextField>
-         <Text fx:id="lbl" layoutX="17.0" layoutY="205.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Enter the number of vertices and edges" textAlignment="CENTER" wrappingWidth="156.0">
+         <Text fx:id="lbl" layoutX="17.0" layoutY="205.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Enter the number of vertices and edges" textAlignment="CENTER" wrappingWidth="156.0" AnchorPane.leftAnchor="17.0" AnchorPane.topAnchor="180.0">
             <font>
                <Font name="System Italic" size="12.0" />
             </font></Text>
-         <AnchorPane fx:id="FrontPane" layoutX="206.0" layoutY="-1.0" onMouseClicked="#TestForPane" prefHeight="813.0" prefWidth="831.0" />
-         <Label fx:id="label" alignment="TOP_LEFT" layoutX="835.0" layoutY="569.0" prefHeight="170.0" prefWidth="335.0" style="-fx-border-color: black;" wrapText="true">
+         <AnchorPane fx:id="FrontPane" layoutX="205.0" layoutY="9.0" onMouseClicked="#TestForPane" prefHeight="800.0" prefWidth="609.0" style="-fx-border-color: black;" AnchorPane.bottomAnchor="5.0" AnchorPane.leftAnchor="205.0" AnchorPane.rightAnchor="381.0" AnchorPane.topAnchor="10.0" />
+         <Label fx:id="label" alignment="TOP_LEFT" layoutX="845.0" layoutY="570.0" prefHeight="160.0" prefWidth="335.0" style="-fx-border-color: black;" wrapText="true" AnchorPane.bottomAnchor="82.0" AnchorPane.rightAnchor="15.0">
             <font>
                <Font name="System Bold Italic" size="14.0" />
             </font>
          </Label>
-         <Label alignment="CENTER" contentDisplay="CENTER" layoutX="1040.0" layoutY="533.0" prefHeight="38.0" prefWidth="156.0" text="Push-messages" textAlignment="CENTER" underline="true">
+         <Label alignment="CENTER" contentDisplay="CENTER" layoutX="1047.0" layoutY="524.0" prefHeight="47.0" prefWidth="156.0" text="Push-messages" textAlignment="CENTER" underline="true" AnchorPane.bottomAnchor="242.0" AnchorPane.rightAnchor="-7.7999999999999545" AnchorPane.topAnchor="524.0">
             <font>
                <Font name="System Bold" size="14.0" />
             </font>
          </Label>
-         <JFXButton fx:id="GenBut" buttonType="RAISED" layoutX="16.0" layoutY="264.0" onMouseClicked="#GenerateBut" prefHeight="67.0" prefWidth="156.0" style="-fx-background-color: lightgrey; -fx-border-color: black;" text="Generate">
+         <JFXButton fx:id="GenBut" buttonType="RAISED" layoutX="16.0" layoutY="264.0" onMouseClicked="#GenerateBut" prefHeight="67.0" prefWidth="156.0" style="-fx-background-color: lightgrey; -fx-border-color: black;" text="Generate" AnchorPane.leftAnchor="16.0" AnchorPane.topAnchor="270.0">
             <font>
                <Font name="System Bold Italic" size="14.0" />
             </font>
          </JFXButton>
-         <JFXButton fx:id="SaveBut" buttonType="RAISED" layoutX="16.0" layoutY="14.0" onMouseClicked="#SaveBut" prefHeight="67.0" prefWidth="156.0" style="-fx-background-color: lightgrey; -fx-border-color: black;" text="Save" textAlignment="CENTER">
+         <JFXButton fx:id="SaveBut" buttonType="RAISED" layoutX="16.0" layoutY="14.0" onMouseClicked="#SaveBut" prefHeight="67.0" prefWidth="156.0" style="-fx-background-color: lightgrey; -fx-border-color: black;" text="Save" textAlignment="CENTER" AnchorPane.leftAnchor="16.0" AnchorPane.topAnchor="10.0">
             <font>
                <Font name="System Bold Italic" size="14.0" />
             </font>
          </JFXButton>
-         <JFXButton fx:id="LoadBut" buttonType="RAISED" layoutX="17.0" layoutY="90.0" onMouseClicked="#LoadBut" prefHeight="67.0" prefWidth="156.0" style="-fx-background-color: lightgrey; -fx-border-color: black;" text="Load">
+         <JFXButton fx:id="LoadBut" buttonType="RAISED" layoutX="17.0" layoutY="90.0" onMouseClicked="#LoadBut" prefHeight="67.0" prefWidth="156.0" style="-fx-background-color: lightgrey; -fx-border-color: black;" text="Load" AnchorPane.leftAnchor="16.0" AnchorPane.topAnchor="90.0">
             <font>
                <Font name="System Bold Italic" size="14.0" />
             </font>
          </JFXButton>
-         <JFXButton fx:id="AlgBut" buttonType="RAISED" layoutX="16.0" layoutY="339.0" onMouseClicked="#StartAlgorithm" prefHeight="67.0" prefWidth="156.0" style="-fx-background-color: lightgrey; -fx-border-color: black;" text="Algorithm">
+         <JFXButton fx:id="AlgBut" buttonType="RAISED" layoutX="16.0" layoutY="339.0" onMouseClicked="#StartAlgorithm" prefHeight="67.0" prefWidth="156.0" style="-fx-background-color: lightgrey; -fx-border-color: black;" text="Algorithm" AnchorPane.leftAnchor="16.0" AnchorPane.topAnchor="350.0">
             <font>
                <Font name="System Bold Italic" size="14.0" />
             </font>
          </JFXButton>
-         <JFXButton fx:id="StepBut" buttonType="RAISED" layoutX="16.0" layoutY="485.0" onMouseClicked="#stepBut" prefHeight="67.0" prefWidth="156.0" style="-fx-background-color: lightgrey; -fx-border-color: black;" text="Step by Step">
+         <JFXButton fx:id="StepBut" buttonType="RAISED" layoutX="16.0" layoutY="485.0" onMouseClicked="#stepBut" prefHeight="67.0" prefWidth="156.0" style="-fx-background-color: lightgrey; -fx-border-color: black;" text="Step by Step" AnchorPane.leftAnchor="16.0" AnchorPane.topAnchor="490.0">
             <font>
                <Font name="System Bold Italic" size="14.0" />
             </font>
          </JFXButton>
-         <JFXButton fx:id="DelBut" buttonType="RAISED" layoutX="16.0" layoutY="638.0" onMouseClicked="#DeleteClick" prefHeight="67.0" prefWidth="156.0" style="-fx-background-color: lightgray; -fx-border-color: black;" text="Delete">
+         <JFXButton fx:id="DelBut" buttonType="RAISED" layoutX="16.0" layoutY="638.0" onMouseClicked="#DeleteClick" prefHeight="67.0" prefWidth="156.0" style="-fx-background-color: lightgray; -fx-border-color: black;" text="Delete" AnchorPane.leftAnchor="16.0" AnchorPane.topAnchor="730.0">
             <font>
                <Font name="System Bold Italic" size="14.0" />
             </font>
          </JFXButton>
-         <JFXButton fx:id="ClearBut" buttonType="RAISED" layoutX="16.0" layoutY="715.0" onMouseClicked="#ClearClicked" prefHeight="67.0" prefWidth="156.0" style="-fx-background-color: lightgray; -fx-border-color: black;" text="Clear">
+         <JFXButton fx:id="ClearBut" buttonType="RAISED" layoutX="16.0" layoutY="715.0" onMouseClicked="#ClearClicked" prefHeight="67.0" prefWidth="156.0" style="-fx-background-color: lightgray; -fx-border-color: black;" text="Clear" AnchorPane.leftAnchor="16.0" AnchorPane.topAnchor="650.0">
             <font>
                <Font name="System Bold Italic" size="14.0" />
             </font>
          </JFXButton>
-         <JFXSlider fx:id="slider" layoutX="25.0" layoutY="441.0" majorTickUnit="1000.0" max="3000.0" min="500.0" prefHeight="38.0" prefWidth="139.0" showTickLabels="true" showTickMarks="true" />
-         <JFXButton fx:id="MoveBut" buttonType="RAISED" layoutX="16.0" layoutY="562.0" onMouseClicked="#MoveClicked" prefHeight="67.0" prefWidth="156.0" style="-fx-background-color: lightgrey; -fx-border-color: black;" text="Move">
+         <JFXSlider fx:id="slider" layoutX="25.0" layoutY="441.0" majorTickUnit="1000.0" max="3000.0" min="500.0" prefHeight="38.0" prefWidth="139.0" showTickLabels="true" showTickMarks="true" AnchorPane.leftAnchor="25.0" AnchorPane.topAnchor="441.0" />
+         <JFXButton fx:id="MoveBut" buttonType="RAISED" layoutX="16.0" layoutY="562.0" onMouseClicked="#MoveClicked" prefHeight="67.0" prefWidth="156.0" style="-fx-background-color: lightgrey; -fx-border-color: black;" text="Move" AnchorPane.leftAnchor="16.0" AnchorPane.topAnchor="570.0">
             <font>
                <Font name="System Bold Italic" size="14.0" />
             </font>
          </JFXButton>
-         <Label fx:id="Downlabel" alignment="TOP_LEFT" layoutX="835.0" layoutY="749.0" prefHeight="47.0" prefWidth="335.0" style="-fx-border-color: black;" wrapText="true">
+         <Label fx:id="Downlabel" alignment="TOP_LEFT" layoutX="845.0" layoutY="749.0" prefHeight="57.0" prefWidth="335.0" style="-fx-border-color: black;" wrapText="true" AnchorPane.bottomAnchor="5.399999999999977" AnchorPane.rightAnchor="15.0">
             <font>
                <Font name="System Bold Italic" size="14.0" />
             </font>

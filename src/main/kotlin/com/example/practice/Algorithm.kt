@@ -91,12 +91,23 @@ class Kosaraju(var downlabel: Label = Label(""), var label: Label = Label(""), v
         return result
 
     }
+    //second откуда, third куда
+    //it.List_of_Lines.add(Pair(Triple(line, arrow1, arrow2), elem))
     suspend fun dfsForStep(graph: OrientedGraph, vertex: Node, step: Int) {
         vertex.visited = true
 
         for (node in vertex.adjacents) {
             if (!node.visited) {
                 node.circle.fill = Color.MEDIUMSEAGREEN
+                for (line in vertex.List_of_Lines)
+                    if (line.second == node) {
+                        line.first.first.stroke = Color.MEDIUMSEAGREEN
+                        line.first.second.stroke = Color.MEDIUMSEAGREEN
+                        line.first.third.stroke = Color.MEDIUMSEAGREEN
+                        for (line2 in node.List_of_Lines)
+                            if (line2.second == vertex)
+                                line2.first.first.stroke = Color.MEDIUMSEAGREEN
+                    }
                 downlabel.text = " - Vertex ${node.name - 1} is considered"
                 delay(step.toDuration(DurationUnit.MILLISECONDS))
                 dfsForStep(graph, node, step)
@@ -166,6 +177,22 @@ class Kosaraju(var downlabel: Label = Label(""), var label: Label = Label(""), v
                 delay(step.toDuration(DurationUnit.MILLISECONDS))
                 for (an in 0 until tmpComp.size) {
                     tmpComp[an] = tmpComp[an] + 1
+                    //if (an > 0){
+                      //  for (node in graph.graph[tmpComp[an] - 1].revadjacents)
+                        //    if (node.n)
+                    //}
+//                    if (an > 0) {
+//                        for (node in graph.graph[tmpComp[an] - 1].revadjacents) {
+//                            if (node.name == tmpComp[an - 1])
+//                                for (line in node.List_of_Lines) {
+//                                    if (line.second == graph.graph[tmpComp[an] - 1]) {
+//                                        line.first.first.stroke = Color.MEDIUMSEAGREEN
+//                                        line.first.second.stroke = Color.MEDIUMSEAGREEN
+//                                        line.first.third.stroke = Color.MEDIUMSEAGREEN
+//                                    }
+//                                }
+//                        }
+//                    }
                     graph.graph[tmpComp[an] - 1].circle.fill = Color.rgb(r, g, b)
                     downlabel.text = " - Vertex ${graph.graph[tmpComp[an] - 1].name - 1} is colored."
                     colors.put(tmpComp[an] - 1, Color.rgb(r, g, b))
@@ -188,13 +215,14 @@ class Kosaraju(var downlabel: Label = Label(""), var label: Label = Label(""), v
         find_bridges()
         return result
     }
+
     fun find_bridges(){
         for(node in graph.graph){
             for(close in node.adjacents){
                 if(node.circle.fill != close.circle.fill){
                     for(lines in node.List_of_Lines){
                         if(lines.second == close){
-                            lines.first.strokeWidth = 3.5
+                            lines.first.first.strokeWidth = 4.0
                         }
                     }
                 }
@@ -266,7 +294,4 @@ class ForTest(var graph: OrientedGraph = OrientedGraph()){
         graph.order.clear()
         return result
     }
-}
-fun main() {
-
 }

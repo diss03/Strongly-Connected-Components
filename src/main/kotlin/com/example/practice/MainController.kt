@@ -75,7 +75,8 @@ class MainController {
     private lateinit var draw: DrawableGraph
 
     private lateinit var obj: Kosaraju
-    private val list_lines = ArrayList<Triple<Line, Node, Node>>()
+   // private val list_lines = ArrayList<Triple<Line, Node, Node>>()
+    private val list_lines = ArrayList<Pair<Triple<Line, Line, Line>, Pair<Node, Node>>>()
     private var job: Job = Job()
     private var job2: Job = Job()
     private var n: Int = 5
@@ -217,16 +218,18 @@ class MainController {
                 draw.drawText()
                 for (node in draw.graph.graph) {
                     for (line in node.List_of_Lines) {
-                        list_lines.add(Triple(line.first, node, line.second))
+                        list_lines.add(Pair(Triple(line.first.first, line.first.second, line.first.third), Pair(node, line.second)))
                     }
                 }
+                //second откуда, third куда
+                //it.List_of_Lines.add(Pair(Triple(line, arrow1, arrow2), elem))
                 for (line in list_lines) {
-                    line.first.setOnMouseClicked {
+                    line.first.second.setOnMouseClicked {
                         (run {
                             FrontPane.children.clear()
-                            line.second.adjacents.remove(line.third)
-                            line.third.revadjacents.remove(line.second)
-                            line.second.List_of_Lines.remove(Pair(line.first, line.third))
+                            line.second.first.adjacents.remove(line.second.second)
+                            line.second.second.revadjacents.remove(line.second.first)
+                            line.second.first.List_of_Lines.remove(Pair(Triple(line.first.first, line.first.second, line.first.third), line.second.second))
 
                             for (el in draw.graph.graph) {
                                 FrontPane.children.add(el.circle)
@@ -235,7 +238,33 @@ class MainController {
                             draw.drawEdge()
                             draw.drawText()
                             for (line2 in list_lines) {
-                                line2.first.setOnMouseClicked {}
+                                line.first.first.setOnMouseClicked {}
+                            }
+                        })
+                    }
+                    line.first.third.setOnMouseClicked {
+                        (run {
+                            FrontPane.children.clear()
+                            line.second.first.adjacents.remove(line.second.second)
+                            line.second.second.revadjacents.remove(line.second.first)
+                            line.second.first.List_of_Lines.remove(
+                                Pair(
+                                    Triple(
+                                        line.first.first,
+                                        line.first.second,
+                                        line.first.third
+                                    ), line.second.second
+                                )
+                            )
+
+                            for (el in draw.graph.graph) {
+                                FrontPane.children.add(el.circle)
+                            }
+
+                            draw.drawEdge()
+                            draw.drawText()
+                            for (line2 in list_lines) {
+                                line.first.first.setOnMouseClicked {}
                             }
                         })
                     }
@@ -374,7 +403,7 @@ class MainController {
                 node.txt.setOnMouseClicked {}
             }
             for (line in list_lines) {
-                line.first.setOnMouseClicked {}
+                line.first.first.setOnMouseClicked {}
             }
             if (MoveBut.isDisable) {
                 val p = MouseInfo.getPointerInfo().location

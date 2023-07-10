@@ -43,11 +43,15 @@ class DrawableGraph(var FrontPane: AnchorPane, n: Int = 5, m: Int = 7, var graph
     }
 
     fun drawEdge(){
+        var doubleEdge = false
         graph.graph.forEach {
             for(elem in it.adjacents){
+                for (node in it.revadjacents)
+                    if (node.name == elem.name)
+                        doubleEdge = true
                 val slope = (it.circle.centerY - elem.circle.centerY) / (it.circle.centerX - elem.circle.centerX)
                 val lineAngle = atan(slope)
-                val arrowAngle = if (it.circle.centerX >= elem.circle.centerX) Math.toRadians(11.0) else -Math.toRadians(168.0)
+                val arrowAngle = if (it.circle.centerX >= elem.circle.centerX) Math.toRadians(20.0) else -Math.toRadians(159.0)
                 val line: Line
                 val arrow1 = Line()
                 val arrow2 = Line()
@@ -58,6 +62,7 @@ class DrawableGraph(var FrontPane: AnchorPane, n: Int = 5, m: Int = 7, var graph
                 val ay = arg1.second
                 val bx = arg2.first
                 val by = arg2.second
+
                 line = Line(bx + it.circle.centerX,by + it.circle.centerY,ax + elem.circle.centerX,ay + elem.circle.centerY)
                 arrow1.startX = ax + elem.circle.centerX
                 arrow1.startY = ay + elem.circle.centerY
@@ -67,11 +72,14 @@ class DrawableGraph(var FrontPane: AnchorPane, n: Int = 5, m: Int = 7, var graph
                 arrow2.startY = ay + elem.circle.centerY
                 arrow2.endX = ax + elem.circle.centerX + arrowLength * cos(lineAngle + arrowAngle)
                 arrow2.endY = ay + elem.circle.centerY + arrowLength * sin(lineAngle + arrowAngle)
-                line.strokeWidth = 2.0
-                arrow1.strokeWidth = 2.0
-                arrow2.strokeWidth = 2.0
-                it.List_of_Lines.add(Pair(line, elem))
-                FrontPane.children.addAll(line, arrow1, arrow2)
+                line.strokeWidth = 2.5
+                arrow1.strokeWidth = 3.5
+                arrow2.strokeWidth = 3.5
+                it.List_of_Lines.add(Pair(Triple(line, arrow1, arrow2), elem))
+                FrontPane.children.add(line)
+                FrontPane.children.addAll(arrow1)
+                FrontPane.children.addAll(arrow2)
+
             }
         }
     }
@@ -80,7 +88,7 @@ class DrawableGraph(var FrontPane: AnchorPane, n: Int = 5, m: Int = 7, var graph
             for(elem in it.revadjacents){
                 val slope = (it.circle.centerY - elem.circle.centerY) / (it.circle.centerX - elem.circle.centerX)
                 val lineAngle = atan(slope)
-                val arrowAngle = if (it.circle.centerX >= elem.circle.centerX) Math.toRadians(11.0) else -Math.toRadians(168.0)
+                val arrowAngle = if (it.circle.centerX >= elem.circle.centerX) Math.toRadians(20.0) else -Math.toRadians(159.0)
                 val line: Line
                 val arrow1 = Line()
                 val arrow2 = Line()
@@ -100,10 +108,13 @@ class DrawableGraph(var FrontPane: AnchorPane, n: Int = 5, m: Int = 7, var graph
                 arrow2.startY = ay + elem.circle.centerY
                 arrow2.endX = ax + elem.circle.centerX + arrowLength * cos(lineAngle + arrowAngle)
                 arrow2.endY = ay + elem.circle.centerY + arrowLength * sin(lineAngle + arrowAngle)
-                line.strokeWidth = 2.0
-                arrow1.strokeWidth = 2.0
-                arrow2.strokeWidth = 2.0
-                FrontPane.children.addAll(line, arrow1, arrow2)
+                line.strokeWidth = 2.5
+                arrow1.strokeWidth = 3.5
+                arrow2.strokeWidth = 3.5
+                it.List_of_Lines.add(Pair(Triple(line, arrow1, arrow2), elem))
+                FrontPane.children.add(line)
+                FrontPane.children.addAll(arrow1)
+                FrontPane.children.addAll(arrow2)
             }
 
         }
@@ -162,7 +173,7 @@ class DrawableGraph(var FrontPane: AnchorPane, n: Int = 5, m: Int = 7, var graph
                 if(node.circle.fill != close.circle.fill){
                     for(lines in node.List_of_Lines){
                         if(lines.second == close){
-                            lines.first.strokeWidth = 3.5
+                            lines.first.first.strokeWidth = 4.5
                         }
                     }
                 }
