@@ -156,4 +156,17 @@ class DrawableGraph(var FrontPane: AnchorPane, n: Int = 5, m: Int = 7, var graph
         }
     }
 
+    fun find_bridges(){
+        for(node in graph.graph){
+            for(close in node.adjacents){
+                if(node.circle.fill != close.circle.fill){
+                    for(lines in node.List_of_Lines){
+                        if(lines.second == close){
+                            lines.first.strokeWidth = 3.5
+                        }
+                    }
+                }
+            }
+        }
+    }
 }

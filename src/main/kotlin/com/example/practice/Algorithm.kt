@@ -162,12 +162,12 @@ class Kosaraju(var downlabel: Label = Label(""), var label: Label = Label(""), v
                 val r = (0..255).random()
                 val g = (0..255).random()
                 val b = (0..255).random()
-                downlabel.text = "Component definition $i: "
+                downlabel.text = " - Component definition $i: "
                 delay(step.toDuration(DurationUnit.MILLISECONDS))
                 for (an in 0 until tmpComp.size) {
                     tmpComp[an] = tmpComp[an] + 1
                     graph.graph[tmpComp[an] - 1].circle.fill = Color.rgb(r, g, b)
-                    downlabel.text = "Vertex ${graph.graph[tmpComp[an] - 1].name - 1} is colored."
+                    downlabel.text = " - Vertex ${graph.graph[tmpComp[an] - 1].name - 1} is colored."
                     colors.put(tmpComp[an] - 1, Color.rgb(r, g, b))
                     delay(step.toDuration(DurationUnit.MILLISECONDS))
                 }
@@ -177,7 +177,7 @@ class Kosaraju(var downlabel: Label = Label(""), var label: Label = Label(""), v
         }
         label.text += " - The components of strong connectivity are constructed. \n"
         label.text += " - Amount: $i\n"
-        delay(step.toDuration(DurationUnit.MILLISECONDS)/2)
+        delay(step.toDuration(DurationUnit.MILLISECONDS))
         graph.graph.forEach { it.visited = false }
         window.children.clear()
         draw.drawNodeWithColor(colors)
@@ -201,6 +201,7 @@ class Kosaraju(var downlabel: Label = Label(""), var label: Label = Label(""), v
             }
         }
     }
+
 }
 
 class ForTest(var graph: OrientedGraph = OrientedGraph()){

@@ -208,12 +208,12 @@ class MainController {
         if (job.isActive)
             job.cancel()
 
-        if (draw.graph.graph.size > 0){
-            DelBut.isDisable = true
-            try {
+        try {
+            if (draw.graph.graph.size > 0) {
+                DelBut.isDisable = true
                 FrontPane.children.clear()
-                draw.drawNodeWithStandart()
                 draw.drawEdge()
+                draw.drawNodeWithStandart()
                 draw.drawText()
                 for (node in draw.graph.graph) {
                     for (line in node.List_of_Lines) {
@@ -316,9 +316,9 @@ class MainController {
                         })
                     }
                 }
-            } catch (er: kotlin.UninitializedPropertyAccessException) {
-                return
             }
+        } catch (er: kotlin.UninitializedPropertyAccessException) {
+            return
         }
     }
 
@@ -367,33 +367,37 @@ class MainController {
 
     @FXML
     fun TestForPane(event: MouseEvent) {
-        DelBut.isDisable = false
-        for (node in draw.graph.graph) {
-            node.circle.setOnMouseClicked {}
-            node.txt.setOnMouseClicked {}
-        }
-        for (line in list_lines) {
-            line.first.setOnMouseClicked {}
-        }
-        if (MoveBut.isDisable) {
-            val p = MouseInfo.getPointerInfo().location
-            val point2D: Point2D = Point2D(event.x, event.y)
-            if (Circle(this.x, this.y, 20.0).contains(point2D) || MoveBut.contains(point2D)) {
-                return
+        try {
+            DelBut.isDisable = false
+            for (node in draw.graph.graph) {
+                node.circle.setOnMouseClicked {}
+                node.txt.setOnMouseClicked {}
             }
-            FrontPane.children.clear()
-            tmp_circle?.centerX = event.x
-            tmp_circle?.centerY = event.y
-
-            for (el in draw.graph.graph) {
-                FrontPane.children.add(el.circle)
+            for (line in list_lines) {
+                line.first.setOnMouseClicked {}
             }
-            this.draw.drawEdge()
-            this.draw.drawText()
+            if (MoveBut.isDisable) {
+                val p = MouseInfo.getPointerInfo().location
+                val point2D: Point2D = Point2D(event.x, event.y)
+                if (Circle(this.x, this.y, 20.0).contains(point2D) || MoveBut.contains(point2D)) {
+                    return
+                }
+                FrontPane.children.clear()
+                tmp_circle?.centerX = event.x
+                tmp_circle?.centerY = event.y
 
+                this.draw.drawEdge()
+                for (el in draw.graph.graph) {
+                    FrontPane.children.add(el.circle)
+                }
+                this.draw.drawText()
+                this.draw.find_bridges()
+            }
+            tmp_circle = null
+            MoveBut.isDisable = false
+        } catch (er: kotlin.UninitializedPropertyAccessException) {
+            return
         }
-        tmp_circle = null
-        MoveBut.isDisable = false
     }
 
     @FXML
