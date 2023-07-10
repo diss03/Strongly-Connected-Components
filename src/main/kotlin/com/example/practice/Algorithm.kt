@@ -203,8 +203,69 @@ class Kosaraju(var downlabel: Label = Label(""), var label: Label = Label(""), v
     }
 }
 
+class ForTest(var graph: OrientedGraph = OrientedGraph()){
 
-//Для проверки работы алгоритма запускаем
+    private var timeout: Int = 0
+    var n = graph.graph.size
+    private var job: Job? = null
+    fun dfs(graph: OrientedGraph, vertex: Node) {
+        timeout += 1
+        vertex.visited = true
+        for (node in vertex.adjacents) {
+            if (!node.visited) {
+                dfs(graph, node)
+            }
+        }
+        timeout += 1
+        vertex.timeout = timeout
+        graph.order.add(vertex)
+    }
+    fun dfs(graph: OrientedGraph, vertex: Node, tmpComp: ArrayList<Int>) {
+        vertex.visited = true
+        tmpComp.add(vertex.name - 1)
+        for (node in vertex.revadjacents) {
+            if (!node.visited) {
+                dfs(graph, node, tmpComp)
+            }
+        }
+    }
+
+    fun start(): String {
+        var result = ""
+        for (vertex in 0 until n) {
+            if (!graph.graph[vertex].visited) {
+                dfs(graph, graph.graph[vertex])
+            }
+        }
+        if (graph.order.size > 1)
+            graph.order = graph.order.reversed() as ArrayList<Node>
+        else if (graph.order.size == 1)
+            return "1: [1] "
+        else
+            return ""
+        graph.graph.forEach { it.visited = false }
+        var i = 0
+        for (vertex in graph.order) {
+            if (!vertex.visited) {
+                val tmpComp = ArrayList<Int>()
+                dfs(graph, vertex, tmpComp)
+                val r = (0..255).random()
+                val g = (0..255).random()
+                val b = (0..255).random()
+                for (an in 0 until tmpComp.size) {
+                    tmpComp[an] = tmpComp[an] + 1
+                    graph.graph[tmpComp[an] - 1].circle.fill = Color.rgb(r, g, b)
+                }
+                i++
+                result = "$result$i: $tmpComp "
+            }
+        }
+        println(result)
+        graph.graph.forEach { it.visited = false }
+        graph.order.clear()
+        return result
+    }
+}
 fun main() {
 
 }

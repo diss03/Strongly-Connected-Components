@@ -278,6 +278,43 @@ class MainController {
                             }
                         })
                     }
+                    node.txt.setOnMouseClicked {
+                        (run {
+                            FrontPane.children.clear()
+                            for (close1 in node.revadjacents) {
+                                if (node in close1.adjacents) {
+                                    close1.adjacents.remove(node)
+                                }
+                            }
+                            for (close2 in node.adjacents) {
+                                if (node in close2.revadjacents) {
+                                    close2.revadjacents.remove(node)
+                                }
+                            }
+
+                            if (node in draw.graph.order) {
+                                draw.graph.order.remove(node)
+                            }
+
+                            node.adjacents.clear()
+                            node.revadjacents.clear()
+                            val ind = draw.graph.graph.indexOf(node)
+                            draw.graph.graph.remove(node)
+
+                            for (i in ind until draw.graph.graph.size) {
+                                draw.graph.graph[i].name -= 1
+                            }
+
+                            for (el in draw.graph.graph) {
+                                FrontPane.children.add(el.circle)
+                            }
+                            draw.drawEdge()
+                            draw.drawText()
+                            for (node2 in draw.graph.graph) {
+                                node2.txt.setOnMouseClicked {}
+                            }
+                        })
+                    }
                 }
             } catch (er: kotlin.UninitializedPropertyAccessException) {
                 return
@@ -333,13 +370,11 @@ class MainController {
         DelBut.isDisable = false
         for (node in draw.graph.graph) {
             node.circle.setOnMouseClicked {}
+            node.txt.setOnMouseClicked {}
         }
-        for (line2 in list_lines) {
-            line2.first.setOnMouseClicked {}
+        for (line in list_lines) {
+            line.first.setOnMouseClicked {}
         }
-
-
-
         if (MoveBut.isDisable) {
             val p = MouseInfo.getPointerInfo().location
             val point2D: Point2D = Point2D(event.x, event.y)
